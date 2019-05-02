@@ -1,0 +1,574 @@
+{
+  "paragraphs": [
+    {
+      "text": "%spark\n\nimport org.apache.spark.sql.SparkSession\n\nimport org.apache.spark.ml.feature.StringIndexer\n\nimport org.apache.spark.sql.types._\n\nval schema \u003d StructType(\n    StructField(\"BBLE\", StringType, true) ::\n    StructField(\"BLOCK\", StringType, true) ::\n    StructField(\"FULLVAL_CURR\", DoubleType, true) ::\n    StructField(\"BLDGCL\", StringType, true) ::\n    StructField(\"TAXCLASS\",StringType, true) ::\n    StructField(\"STORIES\", IntegerType, true) ::\n    StructField(\"ZIP\", StringType, true) ::\n    StructField(\"EXMPTCL\", StringType, true) ::\n    StructField(\"community_district\", StringType, true) ::\n    StructField(\"OWN_change\", IntegerType, true) ::\n    StructField(\"BLDGCL_change\", IntegerType, true) ::\n    StructField(\"TXCL_change\", IntegerType, true) ::\n    StructField(\"UNEMPL_change\", DoubleType, true) ::\n    StructField(\"TRVL_change\", DoubleType, true) ::\n    StructField(\"HINC_change\", DoubleType, true) ::\n    StructField(\"CINC_change\", DoubleType, true) ::\n    StructField(\"HINS_change\", DoubleType, true) ::\n    StructField(\"HOUSEH_SZ\", DoubleType, true) ::\n    StructField(\"HH_change\", DoubleType, true) ::\n    StructField(\"BACH_change\", DoubleType, true) ::\n    StructField(\"DIFFH_change\", DoubleType, true) ::\n    StructField(\"FORB_change\", DoubleType, true) ::\n    StructField(\"NCIT_change\", DoubleType, true) ::\n    StructField(\"LANG_change\", DoubleType, true) ::\n    StructField(\"AGE_change\", DoubleType, true) ::\n    StructField(\"MTG_RT_change\", DoubleType,true) ::\n    StructField(\"label\",IntegerType, true) :: Nil)\n\nval spark \u003d SparkSession.builder().appName(\"Spark SQL basic example\").config(\"spark.some.config.option\", \"some_value\").getOrCreate()\n\nval comb_training_set \u003d spark.read.format(\"csv\").schema(schema).option(\"header\",\"true\").load(\"/user/nycDevPlan_PBD18/data/comb_training_set.csv\")\n\ncomb_training_set.show(10)\n\n//comb_training_set.printSchema()",
+      "user": "anonymous",
+      "dateUpdated": "May 9, 2018 4:26:19 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.sql.SparkSession\nimport org.apache.spark.ml.feature.StringIndexer\nimport org.apache.spark.sql.types._\nschema: org.apache.spark.sql.types.StructType \u003d StructType(StructField(BBLE,StringType,true), StructField(BLOCK,StringType,true), StructField(FULLVAL_CURR,DoubleType,true), StructField(BLDGCL,StringType,true), StructField(TAXCLASS,StringType,true), StructField(STORIES,IntegerType,true), StructField(ZIP,StringType,true), StructField(EXMPTCL,StringType,true), StructField(community_district,StringType,true), StructField(OWN_change,IntegerType,true), StructField(BLDGCL_change,IntegerType,true), StructField(TXCL_change,IntegerType,true), StructField(UNEMPL_change,DoubleType,true), StructField(TRVL_change,DoubleType,true), StructField(HINC_change,DoubleType,true), StructField(CINC_change,DoubleType,true), StructField(HINS_change,DoubleType,true), StructField(HOUSEH_SZ,DoubleType,true), Struct...spark: org.apache.spark.sql.SparkSession \u003d org.apache.spark.sql.SparkSession@23f81ee7\ncomb_training_set: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLOCK: string ... 25 more fields]\n+----------+-----+------------+------+--------+-------+-----+-------+------------------+----------+-------------+-----------+-------------------+-------------------+-----------------+-----------------+-------------------+---------+------------------+------------------+-----------------+----------------+-------------------+----------------+----------------+-------------+-----+\n|      BBLE|BLOCK|FULLVAL_CURR|BLDGCL|TAXCLASS|STORIES|  ZIP|EXMPTCL|community_district|OWN_change|BLDGCL_change|TXCL_change|      UNEMPL_change|        TRVL_change|      HINC_change|      CINC_change|        HINS_change|HOUSEH_SZ|         HH_change|       BACH_change|     DIFFH_change|     FORB_change|        NCIT_change|     LANG_change|      AGE_change|MTG_RT_change|label|\n+----------+-----+------------+------+--------+-------+-----+-------+------------------+----------+-------------+-----------+-------------------+-------------------+-----------------+-----------------+-------------------+---------+------------------+------------------+-----------------+----------------+-------------------+----------------+----------------+-------------+-----+\n|3000330035|   33|    212734.0|    V3|      1B|   null|11201|   null|               302|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    2|\n|3001330013|  133|    507580.0|    V1|       4|   null|11201|   null|               302|         0|            1|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    1|\n|3001940051|  194|   1870000.0|    C0|       1|      3|11201|   null|               302|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    1|\n|3001960006|  196|    597000.0|    A9|       1|      1|11217|   null|               302|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    1|\n|3001980001|  198|   1575000.0|    C7|      2B|      4|11217|   null|               302|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    4|\n|3002350019|  235|   4666000.0|    B3|       1|      3|11201|   null|               302|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    1|\n|3002470002|  247|   4678000.0|    C0|       1|      3|11201|   null|               302|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    3|\n|3002470008|  247|   5375000.0|    B9|       1|      4|11201|   null|               302|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    1|\n|3002510052|  251|   1195000.0|    C1|       2|      5|11201|   null|               302|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    2|\n|3002520061|  252|   2843000.0|    C0|       1|      3|11201|   null|               302|         1|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    2|\n+----------+-----+------------+------+--------+-------+-----+-------+------------------+----------+-------------+-----------+-------------------+-------------------+-----------------+-----------------+-------------------+---------+------------------+------------------+-----------------+----------------+-------------------+----------------+----------------+-------------+-----+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1525814070367_1586816143",
+      "id": "20180508-171430_830645216",
+      "dateCreated": "May 8, 2018 5:14:30 PM",
+      "dateStarted": "May 9, 2018 4:26:19 PM",
+      "dateFinished": "May 9, 2018 4:26:26 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\nval indexer \u003d new StringIndexer().setInputCol(\"BLOCK\").setOutputCol(\"BLOCK_coded\")\nindexer.setHandleInvalid(\"keep\")\n    \nval new_training_set \u003d indexer.fit(comb_training_set).transform(comb_training_set)\n\nval indexer2 \u003d new StringIndexer().setInputCol(\"BLDGCL\").setOutputCol(\"BLDGCL_coded\")\nindexer2.setHandleInvalid(\"keep\")\n    \nval new_training_set2 \u003d indexer2.fit(new_training_set).transform(new_training_set)\n\nval indexer3 \u003d new StringIndexer().setInputCol(\"TAXCLASS\").setOutputCol(\"TAXCLASS_coded\")\nindexer3.setHandleInvalid(\"keep\")\n    \nval new_training_set3 \u003d indexer3.fit(new_training_set).transform(new_training_set2)\n\nval indexer4 \u003d new StringIndexer().setInputCol(\"ZIP\").setOutputCol(\"ZIP_coded\")\nindexer4.setHandleInvalid(\"keep\")\n    \nval new_training_set4 \u003d indexer4.fit(new_training_set).transform(new_training_set3)\n\nval indexer5 \u003d new StringIndexer().setInputCol(\"EXMPTCL\").setOutputCol(\"EXMPTCL_coded\")\nindexer5.setHandleInvalid(\"keep\")\n    \nval new_training_set5 \u003d indexer5.fit(new_training_set).transform(new_training_set4)\n\nval indexer6 \u003d new StringIndexer().setInputCol(\"community_district\").setOutputCol(\"community_district_coded\")\nindexer6.setHandleInvalid(\"keep\")\n    \nval new_training_set6 \u003d indexer6.fit(new_training_set).transform(new_training_set5)\n\nval new_training_set7 \u003d new_training_set6.drop(\"BLOCK\", \"BLDGCL\", \"TAXCLASS\", \"ZIP\", \"EXMPTCL\", \"community_district\")\n\nnew_training_set7.show(10)",
+      "user": "anonymous",
+      "dateUpdated": "May 9, 2018 4:29:08 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "indexer: org.apache.spark.ml.feature.StringIndexer \u003d strIdx_49aca8b4742d\nres203: indexer.type \u003d strIdx_49aca8b4742d\nnew_training_set: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLOCK: string ... 26 more fields]\nindexer2: org.apache.spark.ml.feature.StringIndexer \u003d strIdx_65ea090e84af\nres206: indexer2.type \u003d strIdx_65ea090e84af\nnew_training_set2: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLOCK: string ... 27 more fields]\nindexer3: org.apache.spark.ml.feature.StringIndexer \u003d strIdx_2a8577214874\nres209: indexer3.type \u003d strIdx_2a8577214874\nnew_training_set3: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLOCK: string ... 28 more fields]\nindexer4: org.apache.spark.ml.feature.StringIndexer \u003d strIdx_f1ca62d85bef\nres212: indexer4.type \u003d strIdx_f1ca62d85bef\nnew_training_set4: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLOCK: string ... 29 more fields]\nindexer5: org.apache.spark.ml.feature.StringIndexer \u003d strIdx_ca2ad406ca31\nres215: indexer5.type \u003d strIdx_ca2ad406ca31\nnew_training_set5: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLOCK: string ... 30 more fields]\nindexer6: org.apache.spark.ml.feature.StringIndexer \u003d strIdx_d5d5ec44531e\nres218: indexer6.type \u003d strIdx_d5d5ec44531e\nnew_training_set6: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLOCK: string ... 31 more fields]\nnew_training_set7: org.apache.spark.sql.DataFrame \u003d [BBLE: string, FULLVAL_CURR: double ... 25 more fields]\n+----------+------------+-------+----------+-------------+-----------+-------------------+-------------------+-----------------+-----------------+-------------------+---------+------------------+------------------+-----------------+----------------+-------------------+----------------+----------------+-------------+-----+-----------+------------+--------------+---------+-------------+------------------------+\n|      BBLE|FULLVAL_CURR|STORIES|OWN_change|BLDGCL_change|TXCL_change|      UNEMPL_change|        TRVL_change|      HINC_change|      CINC_change|        HINS_change|HOUSEH_SZ|         HH_change|       BACH_change|     DIFFH_change|     FORB_change|        NCIT_change|     LANG_change|      AGE_change|MTG_RT_change|label|BLOCK_coded|BLDGCL_coded|TAXCLASS_coded|ZIP_coded|EXMPTCL_coded|community_district_coded|\n+----------+------------+-------+----------+-------------+-----------+-------------------+-------------------+-----------------+-----------------+-------------------+---------+------------------+------------------+-----------------+----------------+-------------------+----------------+----------------+-------------+-----+-----------+------------+--------------+---------+-------------+------------------------+\n|3000330035|    212734.0|   null|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    2|     6155.0|        41.0|           5.0|     32.0|         11.0|                    15.0|\n|3001330013|    507580.0|   null|         0|            1|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    1|     6384.0|        18.0|           2.0|     32.0|         11.0|                    15.0|\n|3001940051|   1870000.0|      3|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    1|     1267.0|         1.0|           0.0|     32.0|         11.0|                    15.0|\n|3001960006|    597000.0|      1|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    1|      631.0|         7.0|           0.0|     30.0|         11.0|                    15.0|\n|3001980001|   1575000.0|      4|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    4|     3827.0|        22.0|           4.0|     30.0|         11.0|                    15.0|\n|3002350019|   4666000.0|      3|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    1|     3016.0|         3.0|           0.0|     32.0|         11.0|                    15.0|\n|3002470002|   4678000.0|      3|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    3|     4638.0|         1.0|           0.0|     32.0|         11.0|                    15.0|\n|3002470008|   5375000.0|      4|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    1|     4638.0|         6.0|           0.0|     32.0|         11.0|                    15.0|\n|3002510052|   1195000.0|      5|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    2|     4090.0|        11.0|           3.0|     32.0|         11.0|                    15.0|\n|3002520061|   2843000.0|      3|         1|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|       -14.25|    2|     4129.0|         1.0|           0.0|     32.0|         11.0|                    15.0|\n+----------+------------+-------+----------+-------------+-----------+-------------------+-------------------+-----------------+-----------------+-------------------+---------+------------------+------------------+-----------------+----------------+-------------------+----------------+----------------+-------------+-----+-----------+------------+--------------+---------+-------------+------------------------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1525814210659_-1362517328",
+      "id": "20180508-171650_1623926690",
+      "dateCreated": "May 8, 2018 5:16:50 PM",
+      "dateStarted": "May 9, 2018 4:29:08 PM",
+      "dateFinished": "May 9, 2018 4:29:31 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\nnew_training_set7.write.format(\"csv\").option(\"header\", \"true\").save(\"/user/nycDevPlan_PBD18/data/training_set_encoded.csv\")",
+      "user": "anonymous",
+      "dateUpdated": "May 9, 2018 4:30:17 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1525814274027_355309890",
+      "id": "20180508-171754_387225803",
+      "dateCreated": "May 8, 2018 5:17:54 PM",
+      "dateStarted": "May 9, 2018 4:30:17 PM",
+      "dateFinished": "May 9, 2018 4:30:27 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\nimport org.apache.spark.ml.feature.VectorAssembler\nimport org.apache.spark.ml.linalg.Vectors\n\nval new_training_set8 \u003d new_training_set7.na.drop()\n\nval assembler \u003d new VectorAssembler().setInputCols(Array(\"FULLVAL_CURR\",\"TAXCLASS_coded\",\"STORIES\",\"community_district_coded\",\"OWN_change\",\"BLDGCL_change\",\"TXCL_change\", \"UNEMPL_change\",\"TRVL_change\",\"HINC_change\",\"CINC_change\",\"HINS_change\",\"HOUSEH_SZ\",\"HH_change\",\"BACH_change\",\"DIFFH_change\",\"FORB_change\",\"NCIT_change\",\"LANG_change\",\"AGE_change\",\"MTG_RT_change\")).setOutputCol(\"features\")\n\n//\"BLOCK_coded\"\"BLDGCL_coded\"\"EXMPTCL_coded\"\"ZIP_coded\"\n\n//\"UNEMPL_change\",\"TRVL_change\",\"HINC_change\",\"CINC_change\",\"HINS_change\",\"HOUSEH_SZ\",\"HH_change\",\"BACH_change\",\"DIFFH_change\",\"FORB_change\",\"NCIT_change\",\"LANG_change\",\"AGE_change\",\"MTG_RT_change\"\n\nval output \u003d assembler.transform(new_training_set8)\n\noutput.show(10)",
+      "user": "anonymous",
+      "dateUpdated": "May 9, 2018 4:30:39 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.ml.feature.VectorAssembler\nimport org.apache.spark.ml.linalg.Vectors\nnew_training_set8: org.apache.spark.sql.DataFrame \u003d [BBLE: string, FULLVAL_CURR: double ... 25 more fields]\nassembler: org.apache.spark.ml.feature.VectorAssembler \u003d vecAssembler_91592e599381\noutput: org.apache.spark.sql.DataFrame \u003d [BBLE: string, FULLVAL_CURR: double ... 26 more fields]\n+----------+------------+-------+----------+-------------+-----------+-------------------+-------------------+-----------------+-----------------+-------------------+---------+------------------+------------------+------------------+-------------------+-------------------+-------------------+------------------+-------------+-----+-----------+------------+--------------+---------+-------------+------------------------+--------------------+\n|      BBLE|FULLVAL_CURR|STORIES|OWN_change|BLDGCL_change|TXCL_change|      UNEMPL_change|        TRVL_change|      HINC_change|      CINC_change|        HINS_change|HOUSEH_SZ|         HH_change|       BACH_change|      DIFFH_change|        FORB_change|        NCIT_change|        LANG_change|        AGE_change|MTG_RT_change|label|BLOCK_coded|BLDGCL_coded|TAXCLASS_coded|ZIP_coded|EXMPTCL_coded|community_district_coded|            features|\n+----------+------------+-------+----------+-------------+-----------+-------------------+-------------------+-----------------+-----------------+-------------------+---------+------------------+------------------+------------------+-------------------+-------------------+-------------------+------------------+-------------+-----+-----------+------------+--------------+---------+-------------+------------------------+--------------------+\n|3001940051|   1870000.0|      3|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177| 6.250000000000005|   2.03045685279188|-2.4667931688804576|   0.34965034965035|  2.06489675516225|       -14.25|    1|     1267.0|         1.0|           0.0|     32.0|         11.0|                    15.0|[1870000.0,0.0,3....|\n|3001960006|    597000.0|      1|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177| 6.250000000000005|   2.03045685279188|-2.4667931688804576|   0.34965034965035|  2.06489675516225|       -14.25|    1|      631.0|         7.0|           0.0|     30.0|         11.0|                    15.0|[597000.0,0.0,1.0...|\n|3001980001|   1575000.0|      4|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177| 6.250000000000005|   2.03045685279188|-2.4667931688804576|   0.34965034965035|  2.06489675516225|       -14.25|    4|     3827.0|        22.0|           4.0|     30.0|         11.0|                    15.0|[1575000.0,4.0,4....|\n|3002350019|   4666000.0|      3|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177| 6.250000000000005|   2.03045685279188|-2.4667931688804576|   0.34965034965035|  2.06489675516225|       -14.25|    1|     3016.0|         3.0|           0.0|     32.0|         11.0|                    15.0|[4666000.0,0.0,3....|\n|3002470002|   4678000.0|      3|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177| 6.250000000000005|   2.03045685279188|-2.4667931688804576|   0.34965034965035|  2.06489675516225|       -14.25|    3|     4638.0|         1.0|           0.0|     32.0|         11.0|                    15.0|[4678000.0,0.0,3....|\n|3002470008|   5375000.0|      4|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177| 6.250000000000005|   2.03045685279188|-2.4667931688804576|   0.34965034965035|  2.06489675516225|       -14.25|    1|     4638.0|         6.0|           0.0|     32.0|         11.0|                    15.0|[5375000.0,0.0,4....|\n|3002510052|   1195000.0|      5|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177| 6.250000000000005|   2.03045685279188|-2.4667931688804576|   0.34965034965035|  2.06489675516225|       -14.25|    2|     4090.0|        11.0|           3.0|     32.0|         11.0|                    15.0|[1195000.0,3.0,5....|\n|3002520061|   2843000.0|      3|         1|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177| 6.250000000000005|   2.03045685279188|-2.4667931688804576|   0.34965034965035|  2.06489675516225|       -14.25|    2|     4129.0|         1.0|           0.0|     32.0|         11.0|                    15.0|[2843000.0,0.0,3....|\n|3002700036|    862000.0|      3|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177| 6.250000000000005|   2.03045685279188|-2.4667931688804576|   0.34965034965035|  2.06489675516225|       -14.25|    4|     3220.0|         8.0|           1.0|     32.0|         11.0|                    15.0|[862000.0,1.0,3.0...|\n|3002950008|    471000.0|      3|         0|            0|          0| -13.23529411764707| 0.2666666666666705|8.856019472008986| 9.69273883640147| -33.70409435228689|     2.32|0.8620689655172422| 4.572271386430666|7.2368421052631655|-1.7341040462427602|-1.4056224899598406|-6.9090909090909145|1.1331444759206961|       -14.25|    2|     5006.0|        29.0|           2.0|     32.0|          2.0|                     9.0|[471000.0,2.0,3.0...|\n+----------+------------+-------+----------+-------------+-----------+-------------------+-------------------+-----------------+-----------------+-------------------+---------+------------------+------------------+------------------+-------------------+-------------------+-------------------+------------------+-------------+-----+-----------+------------+--------------+---------+-------------+------------------------+--------------------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1525814370775_688841214",
+      "id": "20180508-171930_564280913",
+      "dateCreated": "May 8, 2018 5:19:30 PM",
+      "dateStarted": "May 9, 2018 4:30:39 PM",
+      "dateFinished": "May 9, 2018 4:30:40 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\n\nval new_data \u003d output.select(\"label\", \"features\")\n\n//val stringify \u003d udf((vs: Seq[String]) \u003d\u003e s\"\"\"[${vs.mkString(\",\")}]\"\"\")\n\n//df.withColumn(\"ArrayOfString\", stringify($\"ArrayOfString\")).write.csv(...)\n\nnew_data.show(10)\n\n//new_data.write.format(\"csv\").option(\"header\", \"true\").save(\"/user/nycDevPlan_PBD18/data/training_features_labels.csv\")",
+      "user": "anonymous",
+      "dateUpdated": "May 9, 2018 1:58:27 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "new_data: org.apache.spark.sql.DataFrame \u003d [label: int, features: vector]\n+-----+--------------------+\n|label|            features|\n+-----+--------------------+\n|    1|[1870000.0,0.0,3....|\n|    1|[597000.0,0.0,1.0...|\n|    4|[1575000.0,4.0,4....|\n|    1|[4666000.0,0.0,3....|\n|    3|[4678000.0,0.0,3....|\n|    1|[5375000.0,0.0,4....|\n|    2|[1195000.0,3.0,5....|\n|    2|[2843000.0,0.0,3....|\n|    4|[862000.0,1.0,3.0...|\n|    2|[471000.0,2.0,3.0...|\n+-----+--------------------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1525814427970_-341485168",
+      "id": "20180508-172027_1760855927",
+      "dateCreated": "May 8, 2018 5:20:27 PM",
+      "dateStarted": "May 9, 2018 1:58:27 PM",
+      "dateFinished": "May 9, 2018 1:58:27 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\nimport org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.classification.{RandomForestClassificationModel, RandomForestClassifier}\nimport org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator\nimport org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorIndexer}\n\nval data \u003d output\n\nval labelIndexer \u003d new StringIndexer()\n  .setInputCol(\"label\")\n  .setOutputCol(\"indexedLabel\")\n  .fit(data)\n  \ndata.filter(\"label is null\").show\n  \nval featureIndexer \u003d new VectorIndexer()\n  .setInputCol(\"features\")\n  .setOutputCol(\"indexedFeatures\")\n  .setMaxCategories(4)\n  .fit(data)\n  \nlabelIndexer.setHandleInvalid(\"keep\")\n\nval Array(trainingData, testData) \u003d data.randomSplit(Array(0.8, 0.2))\n\nval rf \u003d new RandomForestClassifier()\n    .setLabelCol(\"indexedLabel\")\n    .setFeaturesCol(\"features\")\n    .setNumTrees(200)\n    \nval labelConverter \u003d new IndexToString()\n  .setInputCol(\"prediction\")\n  .setOutputCol(\"predictedLabel\")\n  .setLabels(labelIndexer.labels)\n  \nval pipeline \u003d new Pipeline()\n  .setStages(Array(labelIndexer, featureIndexer, rf, labelConverter))\n\nval model \u003d pipeline.fit(trainingData)\n\nval predictions \u003d model.transform(testData)\n\npredictions.select(\"predictedLabel\", \"label\", \"features\").show(10)\n\nval evaluator \u003d new MulticlassClassificationEvaluator()\n  .setLabelCol(\"indexedLabel\")\n  .setPredictionCol(\"prediction\")\n  .setMetricName(\"accuracy\")\nval accuracy \u003d evaluator.evaluate(predictions)\nprintln(\"Test Error \u003d \" + (1.0 - accuracy))\n\nval rfModel \u003d model.stages(2).asInstanceOf[RandomForestClassificationModel]\n\nval importances \u003d model\n    .stages(2)\n    .asInstanceOf[RandomForestClassificationModel]\n    .featureImportances\nprintln(importances)\n\nimportances.toArray.zipWithIndex\n            .map(_.swap)\n            .sortBy(-_._2)\n            .foreach(x \u003d\u003e println(x._1 + \" -\u003e \" + x._2))\n\n//println(\"Learned classification forest model:\\n\" + rfModel.toDebugString)",
+      "user": "anonymous",
+      "dateUpdated": "May 9, 2018 4:31:13 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.classification.{RandomForestClassificationModel, RandomForestClassifier}\nimport org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator\nimport org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorIndexer}\ndata: org.apache.spark.sql.DataFrame \u003d [BBLE: string, FULLVAL_CURR: double ... 26 more fields]\nlabelIndexer: org.apache.spark.ml.feature.StringIndexerModel \u003d strIdx_4c7a1dbecb2b\n+----+------------+-------+----------+-------------+-----------+-------------+-----------+-----------+-----------+-----------+---------+---------+-----------+------------+-----------+-----------+-----------+----------+-------------+-----+-----------+------------+--------------+---------+-------------+------------------------+--------+\n|BBLE|FULLVAL_CURR|STORIES|OWN_change|BLDGCL_change|TXCL_change|UNEMPL_change|TRVL_change|HINC_change|CINC_change|HINS_change|HOUSEH_SZ|HH_change|BACH_change|DIFFH_change|FORB_change|NCIT_change|LANG_change|AGE_change|MTG_RT_change|label|BLOCK_coded|BLDGCL_coded|TAXCLASS_coded|ZIP_coded|EXMPTCL_coded|community_district_coded|features|\n+----+------------+-------+----------+-------------+-----------+-------------+-----------+-----------+-----------+-----------+---------+---------+-----------+------------+-----------+-----------+-----------+----------+-------------+-----+-----------+------------+--------------+---------+-------------+------------------------+--------+\n+----+------------+-------+----------+-------------+-----------+-------------+-----------+-----------+-----------+-----------+---------+---------+-----------+------------+-----------+-----------+-----------+----------+-------------+-----+-----------+------------+--------------+---------+-------------+------------------------+--------+\n\nfeatureIndexer: org.apache.spark.ml.feature.VectorIndexerModel \u003d vecIdx_4b4cd73ebdff\nres239: labelIndexer.type \u003d strIdx_4c7a1dbecb2b\ntrainingData: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [BBLE: string, FULLVAL_CURR: double ... 26 more fields]\ntestData: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [BBLE: string, FULLVAL_CURR: double ... 26 more fields]\nrf: org.apache.spark.ml.classification.RandomForestClassifier \u003d rfc_8a08733c1175\nlabelConverter: org.apache.spark.ml.feature.IndexToString \u003d idxToStr_ca33a65ece9b\npipeline: org.apache.spark.ml.Pipeline \u003d pipeline_ef9894355c7d\nmodel: org.apache.spark.ml.PipelineModel \u003d pipeline_ef9894355c7d\npredictions: org.apache.spark.sql.DataFrame \u003d [BBLE: string, FULLVAL_CURR: double ... 32 more fields]\n+--------------+-----+--------------------+\n|predictedLabel|label|            features|\n+--------------+-----+--------------------+\n|             1|    3|[3391000.0,3.0,5....|\n|             1|    4|[3522000.0,2.0,4....|\n|             1|    3|[1019000.0,1.0,4....|\n|             1|    1|[408000.0,0.0,3.0...|\n|             1|    1|[744000.0,0.0,3.0...|\n|             1|    1|[914000.0,0.0,3.0...|\n|             3|    4|[1088000.0,0.0,3....|\n|             3|    3|[384000.0,0.0,4.0...|\n|             1|    4|[396000.0,0.0,4.0...|\n|             4|    4|[1679000.0,0.0,3....|\n+--------------+-----+--------------------+\nonly showing top 10 rows\n\nevaluator: org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator \u003d mcEval_2c1e23035a47\naccuracy: Double \u003d 0.42222206022787745\nTest Error \u003d 0.5777779397721226\nrfModel: org.apache.spark.ml.classification.RandomForestClassificationModel \u003d RandomForestClassificationModel (uid\u003drfc_8a08733c1175) with 200 trees\nimportances: org.apache.spark.ml.linalg.Vector \u003d (21,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],[0.02238169118355978,0.12430275613533598,0.018045786690740962,0.07766369753868059,1.9300661795737757E-5,4.1711579604537157E-4,1.4369044014228875E-4,0.18441138920773653,0.05072436695936164,0.11156700338543642,0.054532252555355765,0.06669610860880898,0.019204455053425103,0.039504416720772206,0.0324921579791576,0.03755393361038256,0.013209027707140192,0.025552404715253458,0.018841513857251718,0.028237726435649108,0.07449920475796801])\n(21,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],[0.02238169118355978,0.12430275613533598,0.018045786690740962,0.07766369753868059,1.9300661795737757E-5,4.1711579604537157E-4,1.4369044014228875E-4,0.18441138920773653,0.05072436695936164,0.11156700338543642,0.054532252555355765,0.06669610860880898,0.019204455053425103,0.039504416720772206,0.0324921579791576,0.03755393361038256,0.013209027707140192,0.025552404715253458,0.018841513857251718,0.028237726435649108,0.07449920475796801])\n7 -\u003e 0.18441138920773653\n1 -\u003e 0.12430275613533598\n9 -\u003e 0.11156700338543642\n3 -\u003e 0.07766369753868059\n20 -\u003e 0.07449920475796801\n11 -\u003e 0.06669610860880898\n10 -\u003e 0.054532252555355765\n8 -\u003e 0.05072436695936164\n13 -\u003e 0.039504416720772206\n15 -\u003e 0.03755393361038256\n14 -\u003e 0.0324921579791576\n19 -\u003e 0.028237726435649108\n17 -\u003e 0.025552404715253458\n0 -\u003e 0.02238169118355978\n12 -\u003e 0.019204455053425103\n18 -\u003e 0.018841513857251718\n2 -\u003e 0.018045786690740962\n16 -\u003e 0.013209027707140192\n5 -\u003e 4.1711579604537157E-4\n6 -\u003e 1.4369044014228875E-4\n4 -\u003e 1.9300661795737757E-5\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1525814566171_545946654",
+      "id": "20180508-172246_550557706",
+      "dateCreated": "May 8, 2018 5:22:46 PM",
+      "dateStarted": "May 9, 2018 4:31:14 PM",
+      "dateFinished": "May 9, 2018 4:34:54 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\n\nimport org.apache.spark.ml.feature.VectorAssembler\nimport org.apache.spark.ml.linalg.Vectors\n\nval predictions_set \u003d spark.read.format(\"csv\").schema(schema).option(\"header\",\"true\").load(\"/user/nycDevPlan_PBD18/data/pred_set.csv\")\n\npredictions_set.count()\n\n//predictions_set.show(10)\n\nval pindexer \u003d new StringIndexer().setInputCol(\"BLOCK\").setOutputCol(\"BLOCK_coded\").setHandleInvalid(\"keep\")\n    \nval pred_training_set \u003d pindexer.fit(predictions_set).transform(predictions_set)\n\npred_training_set.count()\n\nval pindexer2 \u003d new StringIndexer().setInputCol(\"BLDGCL\").setOutputCol(\"BLDGCL_coded\").setHandleInvalid(\"keep\")\n    \nval pred_training_set2 \u003d pindexer2.fit(pred_training_set).transform(pred_training_set)\n\npred_training_set2.count()\n\nval pindexer3 \u003d new StringIndexer().setInputCol(\"TAXCLASS\").setOutputCol(\"TAXCLASS_coded\").setHandleInvalid(\"keep\")\n    \nval pred_training_set3 \u003d pindexer3.fit(pred_training_set2).transform(pred_training_set2)\n\npred_training_set3.count()\n\nval pindexer4 \u003d new StringIndexer().setInputCol(\"ZIP\").setOutputCol(\"ZIP_coded\").setHandleInvalid(\"keep\")\n    \nval pred_training_set4 \u003d pindexer4.fit(pred_training_set3).transform(pred_training_set3)\n\npred_training_set4.count()\n\nval pindexer5 \u003d new StringIndexer().setInputCol(\"EXMPTCL\").setOutputCol(\"EXMPTCL_coded\").setHandleInvalid(\"keep\")\n    \nval pred_training_set5 \u003d pindexer5.fit(pred_training_set4).transform(pred_training_set4)\n\npred_training_set5.count()\n\nval pindexer6 \u003d new StringIndexer().setInputCol(\"community_district\").setOutputCol(\"community_district_coded\").setHandleInvalid(\"keep\")\n    \nval pred_training_set6 \u003d pindexer6.fit(pred_training_set5).transform(pred_training_set5)\n\npred_training_set6.count()\n\nval pred_training_set7 \u003d pred_training_set6.drop(\"BLOCK\", \"BLDGCL\", \"TAXCLASS\", \"ZIP\", \"EXMPTCL\", \"community_district\", \"label\")\n\npred_training_set7.count()\n\npred_training_set7.show(10)\n\nval pred_training_set8 \u003d pred_training_set7.na.drop()\n\nval assembler \u003d new VectorAssembler().setInputCols(Array(\"FULLVAL_CURR\",\"TAXCLASS_coded\",\"STORIES\",\"community_district_coded\",\"OWN_change\",\"BLDGCL_change\",\"TXCL_change\", \"UNEMPL_change\",\"TRVL_change\",\"HINC_change\",\"CINC_change\",\"HINS_change\",\"HOUSEH_SZ\",\"HH_change\",\"BACH_change\",\"DIFFH_change\",\"FORB_change\",\"NCIT_change\",\"LANG_change\",\"AGE_change\",\"MTG_RT_change\")).setOutputCol(\"features\")\n\nval pred_output \u003d assembler.transform(pred_training_set8)\n\npred_output.count()\n\n//val pred_data \u003d pred_output.select(\"features\")\n",
+      "user": "anonymous",
+      "dateUpdated": "May 9, 2018 10:37:33 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.ml.feature.VectorAssembler\nimport org.apache.spark.ml.linalg.Vectors\npredictions_set: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLOCK: string ... 25 more fields]\nres939: Long \u003d 255885\npindexer: org.apache.spark.ml.feature.StringIndexer \u003d strIdx_a3eeeda926d9\npred_training_set: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLOCK: string ... 26 more fields]\nres945: Long \u003d 255885\npindexer2: org.apache.spark.ml.feature.StringIndexer \u003d strIdx_9df114cbe636\npred_training_set2: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLOCK: string ... 27 more fields]\nres949: Long \u003d 255885\npindexer3: org.apache.spark.ml.feature.StringIndexer \u003d strIdx_2f8ba7126571\npred_training_set3: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLOCK: string ... 28 more fields]\nres953: Long \u003d 255885\npindexer4: org.apache.spark.ml.feature.StringIndexer \u003d strIdx_016d02269245\npred_training_set4: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLOCK: string ... 29 more fields]\nres957: Long \u003d 255885\npindexer5: org.apache.spark.ml.feature.StringIndexer \u003d strIdx_c7103b372e9b\npred_training_set5: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLOCK: string ... 30 more fields]\nres961: Long \u003d 255885\npindexer6: org.apache.spark.ml.feature.StringIndexer \u003d strIdx_244b3b906e0e\npred_training_set6: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLOCK: string ... 31 more fields]\nres965: Long \u003d 255885\npred_training_set7: org.apache.spark.sql.DataFrame \u003d [BBLE: string, FULLVAL_CURR: double ... 24 more fields]\nres968: Long \u003d 255885\n+----------+------------+-------+----------+-------------+-----------+-------------------+-------------------+-----------------+-----------------+-------------------+---------+------------------+------------------+-----------------+----------------+-------------------+----------------+----------------+-------------+-----------+------------+--------------+---------+-------------+------------------------+\n|      BBLE|FULLVAL_CURR|STORIES|OWN_change|BLDGCL_change|TXCL_change|      UNEMPL_change|        TRVL_change|      HINC_change|      CINC_change|        HINS_change|HOUSEH_SZ|         HH_change|       BACH_change|     DIFFH_change|     FORB_change|        NCIT_change|     LANG_change|      AGE_change|MTG_RT_change|BLOCK_coded|BLDGCL_coded|TAXCLASS_coded|ZIP_coded|EXMPTCL_coded|community_district_coded|\n+----------+------------+-------+----------+-------------+-----------+-------------------+-------------------+-----------------+-----------------+-------------------+---------+------------------+------------------+-----------------+----------------+-------------------+----------------+----------------+-------------+-----------+------------+--------------+---------+-------------+------------------------+\n|3000330035|    232000.0|   null|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|        10.98|     6161.0|        45.0|           5.0|     32.0|         10.0|                    15.0|\n|3001330013|    1.9369E7|     13|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|        10.98|     6365.0|        53.0|           2.0|     32.0|         10.0|                    15.0|\n|3001780008|    118000.0|   null|         1|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|        10.98|     3588.0|         2.0|           0.0|     31.0|         10.0|                    15.0|\n|3001940051|   3408000.0|      3|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|        10.98|     1161.0|         1.0|           0.0|     32.0|         10.0|                    15.0|\n|3001960006|    990000.0|      1|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|        10.98|      581.0|         7.0|           0.0|     31.0|         10.0|                    15.0|\n|3001980001|   1550000.0|      4|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|        10.98|     4063.0|        22.0|           4.0|     31.0|         10.0|                    15.0|\n|3002350019|   5999000.0|      3|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|        10.98|     3020.0|         3.0|           0.0|     32.0|         10.0|                    15.0|\n|3002470002|   4751000.0|      3|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|        10.98|     4647.0|         1.0|           0.0|     32.0|         10.0|                    15.0|\n|3002470008|   6946000.0|      4|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|        10.98|     4647.0|         6.0|           0.0|     32.0|         10.0|                    15.0|\n|3002510052|   1403000.0|      5|         0|            0|          0|-15.957446808510637|-0.2840909090909131|7.117516629711752|8.119060644742975|-18.999451109542854|      2.2|0.4545454545454448|2.9209621993127177|6.250000000000005|2.03045685279188|-2.4667931688804576|0.34965034965035|2.06489675516225|        10.98|     4071.0|        11.0|           3.0|     32.0|         10.0|                    15.0|\n+----------+------------+-------+----------+-------------+-----------+-------------------+-------------------+-----------------+-----------------+-------------------+---------+------------------+------------------+-----------------+----------------+-------------------+----------------+----------------+-------------+-----------+------------+--------------+---------+-------------+------------------------+\nonly showing top 10 rows\n\npred_training_set8: org.apache.spark.sql.DataFrame \u003d [BBLE: string, FULLVAL_CURR: double ... 24 more fields]\nassembler: org.apache.spark.ml.feature.VectorAssembler \u003d vecAssembler_b21a4d03f309\npred_output: org.apache.spark.sql.DataFrame \u003d [BBLE: string, FULLVAL_CURR: double ... 25 more fields]\nres975: Long \u003d 230083\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1525885838957_1142441415",
+      "id": "20180509-131038_114510725",
+      "dateCreated": "May 9, 2018 1:10:38 PM",
+      "dateStarted": "May 9, 2018 10:37:33 PM",
+      "dateFinished": "May 9, 2018 10:37:57 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\nval predictions2020 \u003d model.transform(pred_output)\n\npredictions2020.count()\n\npredictions2020.select(\"predictedLabel\", \"features\").show()",
+      "user": "anonymous",
+      "dateUpdated": "May 9, 2018 10:38:23 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "predictions2020: org.apache.spark.sql.DataFrame \u003d [BBLE: string, FULLVAL_CURR: double ... 30 more fields]\nres980: Long \u003d 230083\n+--------------+--------------------+\n|predictedLabel|            features|\n+--------------+--------------------+\n|             1|[1.9369E7,2.0,13....|\n|             1|[3408000.0,0.0,3....|\n|             1|[990000.0,0.0,1.0...|\n|             1|[1550000.0,4.0,4....|\n|             1|[5999000.0,0.0,3....|\n|             1|[4751000.0,0.0,3....|\n|             1|[6946000.0,0.0,4....|\n|             1|[1403000.0,3.0,5....|\n|             1|[3649000.0,0.0,3....|\n|             1|[896000.0,1.0,3.0...|\n|             1|[5257000.0,0.0,3....|\n|             1|[2556000.0,0.0,3....|\n|             1|[2132000.0,0.0,3....|\n|             1|[3556000.0,0.0,3....|\n|             1|[980000.0,1.0,3.0...|\n|             1|[1151000.0,1.0,3....|\n|             1|[425000.0,1.0,3.0...|\n|             1|[869000.0,6.0,3.0...|\n|             1|[1168000.0,4.0,4....|\n|             1|[122000.0,0.0,3.0...|\n+--------------+--------------------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1525890310072_254293922",
+      "id": "20180509-142510_918009730",
+      "dateCreated": "May 9, 2018 2:25:10 PM",
+      "dateStarted": "May 9, 2018 10:38:23 PM",
+      "dateFinished": "May 9, 2018 10:38:25 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\n\nval predictions_with_id \u003d predictions2020.select(\"predictedLabel\").withColumn(\"ID\", monotonically_increasing_id())\n\n//predictions_with_id.show(10)\n\npredictions_with_id.count()\n\nval prediction_output_with_id \u003d pred_output.withColumn(\"ID\", monotonically_increasing_id())\n\n///prediction_output_with_id.show(10)\n\nprediction_output_with_id.count()\n\nval predicted_labels2020 \u003d prediction_output_with_id.join(predictions_with_id,\"ID\").drop(\"ID\")\n\n//predicted_labels2020.show(10)\n\npredicted_labels2020.count()\n\nval labels2020 \u003d predicted_labels2020.select(\"BBLE\", \"predictedLabel\")\n\nlabels2020.count()\n\nlabels2020.orderBy(\"BBLE\").show(10)",
+      "user": "anonymous",
+      "dateUpdated": "May 9, 2018 10:38:59 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "predictions_with_id: org.apache.spark.sql.DataFrame \u003d [predictedLabel: string, ID: bigint]\nres986: Long \u003d 230083\nprediction_output_with_id: org.apache.spark.sql.DataFrame \u003d [BBLE: string, FULLVAL_CURR: double ... 26 more fields]\nres991: Long \u003d 230083\npredicted_labels2020: org.apache.spark.sql.DataFrame \u003d [BBLE: string, FULLVAL_CURR: double ... 26 more fields]\nres996: Long \u003d 230083\nlabels2020: org.apache.spark.sql.DataFrame \u003d [BBLE: string, predictedLabel: string]\nres999: Long \u003d 230083\n+----------+--------------+\n|      BBLE|predictedLabel|\n+----------+--------------+\n|3000180001|             1|\n|3000190001|             1|\n|3000200006|             1|\n|3000200021|             1|\n|3000260038|             1|\n|3000260050|             1|\n|3000270040|             1|\n|3000280005|             1|\n|3000290016|             3|\n|3000300001|             3|\n+----------+--------------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1525890725862_-173766327",
+      "id": "20180509-143205_1147575401",
+      "dateCreated": "May 9, 2018 2:32:05 PM",
+      "dateStarted": "May 9, 2018 10:38:59 PM",
+      "dateFinished": "May 9, 2018 10:39:20 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\nlabels2020.write.format(\"csv\").option(\"header\", \"true\").save(\"/user/nycDevPlan_PBD18/data/labels2020.csv\")",
+      "user": "anonymous",
+      "dateUpdated": "May 9, 2018 10:42:50 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {}
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1525828665482_1025366889",
+      "id": "20180508-211745_2022104942",
+      "dateCreated": "May 8, 2018 9:17:45 PM",
+      "dateStarted": "May 9, 2018 10:42:50 PM",
+      "dateFinished": "May 9, 2018 10:43:08 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\n\nval output_schema \u003d StructType(\n    StructField(\"BBLE\", StringType) ::\n    StructField(\"B\", IntegerType) ::\n    StructField(\"BLOCK\", LongType) ::\n    StructField(\"LOT\", LongType) ::\n    StructField(\"EASEMENT\", StringType) ::\n    StructField(\"OWNER\", StringType) ::\n    StructField(\"BLDGCL\", StringType) ::\n    StructField(\"TAXCLASS\", StringType) ::\n    StructField(\"LTFRONT\", StringType) ::\n    StructField(\"LTDEP\", StringType) ::\n    StructField(\"EXT\", StringType) ::\n    StructField(\"STORIES\", StringType) ::\n    StructField(\"FULLVAL\", DoubleType) ::\n    StructField(\"AVLAND\", DoubleType) ::\n    StructField(\"AVTOT\", DoubleType ) ::\n    StructField(\"EXLAND\", DoubleType ) ::\n    StructField(\"EXTOT\", DoubleType ) ::\n    StructField(\"EXCD1\", StringType ) ::\n    StructField(\"STADDR\", StringType ) ::\n    StructField(\"ZIP\", StringType ) ::\n    StructField(\"EXMPTCL\", StringType ) ::\n    StructField(\"BLDFRONT\", StringType ) ::\n    StructField(\"BLDDEPTH\", StringType ) ::\n    StructField(\"AVLAND2\", DoubleType ) ::\n    StructField(\"AVTOT2\", DoubleType ) ::\n    StructField(\"EXLAND2\", DoubleType ) ::\n    StructField(\"EXTOT2\", DoubleType) ::\n    StructField(\"EXCD2\", StringType) ::\n    StructField(\"PERIOD\", StringType) ::\n    StructField(\"YEAR\", StringType) :: Nil)\n\nval FY19 \u003d spark.read.format(\"csv\").option(\"header\",\"true\").schema(output_schema).load(\"/user/nycDevPlan_PBD18/data/Property_Tax_Valuations/avroll_FY19.txt\")\n\nval FY19_trim \u003d FY19.selectExpr(\"BBLE\",\"BLDGCL\", \"TAXCLASS\", \"STADDR as Address\", \"OWNER\", \"FULLVAL as Full_Value\")\n\n//FY19_trim.show()\n\nFY19_trim.count()\n\nval data_2020 \u003d FY19_trim.join(labels2020, Seq(\"BBLE\"), \"inner\").withColumn(\"Year\", lit(2020))\n\ndata_2020.show(10)\n\ndata_2020.count()",
+      "user": "anonymous",
+      "dateUpdated": "May 9, 2018 10:44:06 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "output_schema: org.apache.spark.sql.types.StructType \u003d StructType(StructField(BBLE,StringType,true), StructField(B,IntegerType,true), StructField(BLOCK,LongType,true), StructField(LOT,LongType,true), StructField(EASEMENT,StringType,true), StructField(OWNER,StringType,true), StructField(BLDGCL,StringType,true), StructField(TAXCLASS,StringType,true), StructField(LTFRONT,StringType,true), StructField(LTDEP,StringType,true), StructField(EXT,StringType,true), StructField(STORIES,StringType,true), StructField(FULLVAL,DoubleType,true), StructField(AVLAND,DoubleType,true), StructField(AVTOT,DoubleType,true), StructField(EXLAND,DoubleType,true), StructField(EXTOT,DoubleType,true), StructField(EXCD1,StringType,true), StructField(STADDR,StringType,true), StructField(ZIP,StringType,true), StructFie...FY19: org.apache.spark.sql.DataFrame \u003d [BBLE: string, B: int ... 28 more fields]\nFY19_trim: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLDGCL: string ... 4 more fields]\nres1009: Long \u003d 1113821\ndata_2020: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLDGCL: string ... 6 more fields]\n+----------+------+--------+-------------------+--------------------+----------+--------------+----+\n|      BBLE|BLDGCL|TAXCLASS|            Address|               OWNER|Full_Value|predictedLabel|Year|\n+----------+------+--------+-------------------+--------------------+----------+--------------+----+\n|3001730053|    B3|       1|   435 STATE STREET|     SCHERZER HOWARD| 2801000.0|             3|2020|\n|3001760046|    C3|      2A|315 ATLANTIC AVENUE|                LILY| 1316000.0|             3|2020|\n|3001770046|    S5|      2A|375 ATLANTIC AVENUE|   NORMAN A BENJAMIN| 1624000.0|             3|2020|\n|3001830024|    S2|       1|380 ATLANTIC AVENUE|         LEVITT BERT| 1087000.0|             3|2020|\n|3001840007|    S2|       1|416 ATLANTIC AVENUE|416 ATLANTIC AVEN...| 1087000.0|             3|2020|\n|3001840042|    B1|       1| 433 PACIFIC STREET|    KELLEY, PATRICIA| 3727000.0|             3|2020|\n|3002340046|    B1|       1|  104 WILLOW STREET|WILLOW ST. BROOKLYN,| 7847000.0|             3|2020|\n|3002350056|    C1|      2B|   150 HICKS STREET|    150 HICKS STREET| 4064000.0|             3|2020|\n|3002350070|    B1|       1|   176 HICKS STREET|         JOHN LIPSKY| 6948000.0|             3|2020|\n|3002420012|    D4|       2|103 MONTAGUE STREET|PINETTE HOUSING C...| 5466000.0|             3|2020|\n+----------+------+--------+-------------------+--------------------+----------+--------------+----+\nonly showing top 10 rows\n\nres1014: Long \u003d 230083\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1525903203382_-1149068233",
+      "id": "20180509-180003_789622177",
+      "dateCreated": "May 9, 2018 6:00:03 PM",
+      "dateStarted": "May 9, 2018 10:44:06 PM",
+      "dateFinished": "May 9, 2018 10:44:43 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\n\ndata_2020.show(10)",
+      "user": "anonymous",
+      "dateUpdated": "May 9, 2018 10:45:37 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {}
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+------+--------+-------------------+--------------------+----------+--------------+----+\n|      BBLE|BLDGCL|TAXCLASS|            Address|               OWNER|Full_Value|predictedLabel|Year|\n+----------+------+--------+-------------------+--------------------+----------+--------------+----+\n|3001730053|    B3|       1|   435 STATE STREET|     SCHERZER HOWARD| 2801000.0|             3|2020|\n|3001760046|    C3|      2A|315 ATLANTIC AVENUE|                LILY| 1316000.0|             3|2020|\n|3001770046|    S5|      2A|375 ATLANTIC AVENUE|   NORMAN A BENJAMIN| 1624000.0|             3|2020|\n|3001830024|    S2|       1|380 ATLANTIC AVENUE|         LEVITT BERT| 1087000.0|             1|2020|\n|3001840007|    S2|       1|416 ATLANTIC AVENUE|416 ATLANTIC AVEN...| 1087000.0|             1|2020|\n|3001840042|    B1|       1| 433 PACIFIC STREET|    KELLEY, PATRICIA| 3727000.0|             1|2020|\n|3002340046|    B1|       1|  104 WILLOW STREET|WILLOW ST. BROOKLYN,| 7847000.0|             1|2020|\n|3002350056|    C1|      2B|   150 HICKS STREET|    150 HICKS STREET| 4064000.0|             1|2020|\n|3002350070|    B1|       1|   176 HICKS STREET|         JOHN LIPSKY| 6948000.0|             1|2020|\n|3002420012|    D4|       2|103 MONTAGUE STREET|PINETTE HOUSING C...| 5466000.0|             1|2020|\n+----------+------+--------+-------------------+--------------------+----------+--------------+----+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1525904753222_-424075128",
+      "id": "20180509-182553_1078728203",
+      "dateCreated": "May 9, 2018 6:25:53 PM",
+      "dateStarted": "May 9, 2018 10:45:37 PM",
+      "dateFinished": "May 9, 2018 10:45:49 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\n\nval soc_econ \u003d spark.read.format(\"csv\").option(\"header\",\"true\").load(\"/user/nycDevPlan_PBD18/data/FY2016_BROOKLYN_Full.csv\")\n\nval soc_econ_trimmed \u003d soc_econ.drop(\"B\",\"BLOCK\",\"LOT\",\"EASEMENT\",\"OWNER\",\"BLDGCL\",\"TAXCLASS\",\"LTFRONT\",\"LTDEP\",\"EXT\",\"STORIES\",\"FULLVAL\",\"AVLAND\",\"AVTOT\",\"EXLAND\",\"EXTOT\",\"EXCD1\",\"STADDR\",\"ZIP\",\"EXMPTCL\",\"BLDFRONT\",\"BLDDEPTH\",\"AVLAND2\",\"AVTOT2\",\"EXLAND2\",\"EXTOT2\",\"EXCD2\",\"PERIOD\",\"Year\",\"BORO\",\"FULLADDRESS\",\"DISTRICT_CODE\")\n\nsoc_econ_trimmed.show(10)\n\n",
+      "user": "anonymous",
+      "dateUpdated": "May 9, 2018 11:13:08 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "soc_econ: org.apache.spark.sql.DataFrame \u003d [BBLE: string, B: string ... 50 more fields]\nsoc_econ_trimmed: org.apache.spark.sql.DataFrame \u003d [BBLE: string, Unemployment Rate: string ... 18 more fields]\n+----------+-----------------+----------------------------------+---------------------------------+---------------------------+----------------------------+--------------------+--------------+--------------------+--------+----------------------+-----------------------------------+---------------------------+------------+------------------------+---------------------------+----------+---------+----------+-----+\n|      BBLE|Unemployment Rate|Mean travel time to work (minutes)|Median household income (dollars)|Per capita income (dollars)|No health insurance coverage|       District_Name|Tax_Rates_2016|       District Name| Borough|Average household size|Percent bachelor\u0027s degree or higher|Different house in the U.S.|Foreign born|Naturalized U.S. citizen|Language other than English|Median age| latitude| longitude|Label|\n+----------+-----------------+----------------------------------+---------------------------------+---------------------------+----------------------------+--------------------+--------------+--------------------+--------+----------------------+-----------------------------------+---------------------------+------------+------------------------+---------------------------+----------+---------+----------+-----+\n|3000270020|            0.079|                              35.1|                            82127|                      53360|                       10330|NYC-Brooklyn Comm...|        0.1057|Brooklyn Heights ...|Brooklyn|                  2.21|                              0.599|                      0.153|       0.201|                   0.514|                      0.287|      34.6|40.703728| -73.98987|    3|\n|3000270020|            0.059|                              37.6|                           104652|                      65367|                        6914|NYC-Brooklyn Comm...|        0.1057|Park Slope, Carro...|Brooklyn|                  2.34|                              0.709|                      0.163|        0.17|                   0.491|                      0.256|      35.7|40.703728| -73.98987|    3|\n|3000271001|            0.079|                              35.1|                            82127|                      53360|                       10330|NYC-Brooklyn Comm...|        0.1057|Brooklyn Heights ...|Brooklyn|                  2.21|                              0.599|                      0.153|       0.201|                   0.514|                      0.287|      34.6|40.703793|-73.990234|    2|\n|3000271001|            0.059|                              37.6|                           104652|                      65367|                        6914|NYC-Brooklyn Comm...|        0.1057|Park Slope, Carro...|Brooklyn|                  2.34|                              0.709|                      0.163|        0.17|                   0.491|                      0.256|      35.7|40.703793|-73.990234|    2|\n|3000271002|            0.079|                              35.1|                            82127|                      53360|                       10330|NYC-Brooklyn Comm...|        0.1057|Brooklyn Heights ...|Brooklyn|                  2.21|                              0.599|                      0.153|       0.201|                   0.514|                      0.287|      34.6|40.703793|-73.990234|    2|\n|3000271002|            0.059|                              37.6|                           104652|                      65367|                        6914|NYC-Brooklyn Comm...|        0.1057|Park Slope, Carro...|Brooklyn|                  2.34|                              0.709|                      0.163|        0.17|                   0.491|                      0.256|      35.7|40.703793|-73.990234|    2|\n|3000271003|            0.079|                              35.1|                            82127|                      53360|                       10330|NYC-Brooklyn Comm...|        0.1289|Brooklyn Heights ...|Brooklyn|                  2.21|                              0.599|                      0.153|       0.201|                   0.514|                      0.287|      34.6|40.703793|-73.990234|    1|\n|3000271003|            0.059|                              37.6|                           104652|                      65367|                        6914|NYC-Brooklyn Comm...|        0.1289|Park Slope, Carro...|Brooklyn|                  2.34|                              0.709|                      0.163|        0.17|                   0.491|                      0.256|      35.7|40.703793|-73.990234|    1|\n|3000271004|            0.079|                              35.1|                            82127|                      53360|                       10330|NYC-Brooklyn Comm...|        0.1289|Brooklyn Heights ...|Brooklyn|                  2.21|                              0.599|                      0.153|       0.201|                   0.514|                      0.287|      34.6|40.703793|-73.990234|    1|\n|3000271004|            0.059|                              37.6|                           104652|                      65367|                        6914|NYC-Brooklyn Comm...|        0.1289|Park Slope, Carro...|Brooklyn|                  2.34|                              0.709|                      0.163|        0.17|                   0.491|                      0.256|      35.7|40.703793|-73.990234|    1|\n+----------+-----------------+----------------------------------+---------------------------------+---------------------------+----------------------------+--------------------+--------------+--------------------+--------+----------------------+-----------------------------------+---------------------------+------------+------------------------+---------------------------+----------+---------+----------+-----+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1525919127181_-494187111",
+      "id": "20180509-222527_42489820",
+      "dateCreated": "May 9, 2018 10:25:27 PM",
+      "dateStarted": "May 9, 2018 11:10:36 PM",
+      "dateFinished": "May 9, 2018 11:10:36 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\nval final_pred \u003d data_2020.join(soc_econ_trimmed, Seq(\"BBLE\"), \"inner\")\n\nfinal_pred.count()\n\nfinal_pred.show(10)",
+      "user": "anonymous",
+      "dateUpdated": "May 9, 2018 11:16:03 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "final_pred: org.apache.spark.sql.DataFrame \u003d [BBLE: string, BLDGCL: string ... 25 more fields]\nres1022: Long \u003d 48231\n+----------+------+--------+-----------------+--------------------+----------+--------------+----+-----------------+----------------------------------+---------------------------------+---------------------------+----------------------------+--------------------+--------------+--------------------+--------+----------------------+-----------------------------------+---------------------------+------------+------------------------+---------------------------+----------+---------+----------+-----+\n|      BBLE|BLDGCL|TAXCLASS|          Address|               OWNER|Full_Value|predictedLabel|Year|Unemployment Rate|Mean travel time to work (minutes)|Median household income (dollars)|Per capita income (dollars)|No health insurance coverage|       District_Name|Tax_Rates_2016|       District Name| Borough|Average household size|Percent bachelor\u0027s degree or higher|Different house in the U.S.|Foreign born|Naturalized U.S. citizen|Language other than English|Median age| latitude| longitude|Label|\n+----------+------+--------+-----------------+--------------------+----------+--------------+----+-----------------+----------------------------------+---------------------------------+---------------------------+----------------------------+--------------------+--------------+--------------------+--------+----------------------+-----------------------------------+---------------------------+------------+------------------------+---------------------------+----------+---------+----------+-----+\n|3003600053|    B3|       1|        5 2 PLACE|        MARIO CARUSO| 2819000.0|             1|2020|            0.112|                              42.2|                            44329|                      24075|                       13178|NYC-Brooklyn Comm...|        0.1999|Crown Heights Sou...|Brooklyn|                  2.63|                              0.288|                      0.084|       0.411|                   0.602|                      0.307|      34.3| 40.68067|-74.000626|    1|\n|3003600053|    B3|       1|        5 2 PLACE|        MARIO CARUSO| 2819000.0|             1|2020|            0.079|                              35.1|                            82127|                      53360|                       10330|NYC-Brooklyn Comm...|        0.1999|Brooklyn Heights ...|Brooklyn|                  2.21|                              0.599|                      0.153|       0.201|                   0.514|                      0.287|      34.6| 40.68067|-74.000626|    1|\n|3003600053|    B3|       1|        5 2 PLACE|        MARIO CARUSO| 2819000.0|             1|2020|            0.059|                              37.6|                           104652|                      65367|                        6914|NYC-Brooklyn Comm...|        0.1999|Park Slope, Carro...|Brooklyn|                  2.34|                              0.709|                      0.163|        0.17|                   0.491|                      0.256|      35.7| 40.68067|-74.000626|    1|\n|3003930051|    B9|       1|465 WARREN STREET|     WARREN NERG LLC| 2458000.0|             1|2020|            0.078|                              43.5|                            60863|                      32918|                       11413|NYC-Brooklyn Comm...|        0.1999|Bay Ridge \u0026 Dyker...|Brooklyn|                  2.57|                              0.394|                      0.097|       0.393|                   0.579|                      0.564|      39.4|40.683434|-73.985695|    1|\n|3003930051|    B9|       1|465 WARREN STREET|     WARREN NERG LLC| 2458000.0|             1|2020|            0.086|                              41.7|                            45503|                      29534|                       15197|NYC-Brooklyn Comm...|        0.1999|Crown Heights Nor...|Brooklyn|                  2.38|                              0.381|                      0.106|       0.295|                   0.571|                      0.216|      34.2|40.683434|-73.985695|    1|\n|3003930051|    B9|       1|465 WARREN STREET|     WARREN NERG LLC| 2458000.0|             1|2020|            0.079|                              35.1|                            82127|                      53360|                       10330|NYC-Brooklyn Comm...|        0.1999|Brooklyn Heights ...|Brooklyn|                  2.21|                              0.599|                      0.153|       0.201|                   0.514|                      0.287|      34.6|40.683434|-73.985695|    1|\n|3003930051|    B9|       1|465 WARREN STREET|     WARREN NERG LLC| 2458000.0|             1|2020|            0.059|                              37.6|                           104652|                      65367|                        6914|NYC-Brooklyn Comm...|        0.1999|Park Slope, Carro...|Brooklyn|                  2.34|                              0.709|                      0.163|        0.17|                   0.491|                      0.256|      35.7|40.683434|-73.985695|    1|\n|3004510053|    B9|       1|      39 1 STREET|CRETELLA, ANTHONY JR| 2628000.0|             1|2020|            0.112|                              42.2|                            44329|                      24075|                       13178|NYC-Brooklyn Comm...|        0.1999|Crown Heights Sou...|Brooklyn|                  2.63|                              0.288|                      0.084|       0.411|                   0.602|                      0.307|      34.3| 40.67866|-73.991745|    2|\n|3004510053|    B9|       1|      39 1 STREET|CRETELLA, ANTHONY JR| 2628000.0|             1|2020|            0.079|                              35.1|                            82127|                      53360|                       10330|NYC-Brooklyn Comm...|        0.1999|Brooklyn Heights ...|Brooklyn|                  2.21|                              0.599|                      0.153|       0.201|                   0.514|                      0.287|      34.6| 40.67866|-73.991745|    2|\n|3004510053|    B9|       1|      39 1 STREET|CRETELLA, ANTHONY JR| 2628000.0|             1|2020|            0.059|                              37.6|                           104652|                      65367|                        6914|NYC-Brooklyn Comm...|        0.1999|Park Slope, Carro...|Brooklyn|                  2.34|                              0.709|                      0.163|        0.17|                   0.491|                      0.256|      35.7| 40.67866|-73.991745|    2|\n+----------+------+--------+-----------------+--------------------+----------+--------------+----+-----------------+----------------------------------+---------------------------------+---------------------------+----------------------------+--------------------+--------------+--------------------+--------+----------------------+-----------------------------------+---------------------------+------------+------------------------+---------------------------+----------+---------+----------+-----+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1525921221046_-17680270",
+      "id": "20180509-230021_681370465",
+      "dateCreated": "May 9, 2018 11:00:21 PM",
+      "dateStarted": "May 9, 2018 11:16:03 PM",
+      "dateFinished": "May 9, 2018 11:16:31 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\nimport org.apache.spark.sql.functions.udf\n\ndef calc_val: (Int:cat, Double:val) \u003d\u003e { \n    \n    if cat \u003d\u003d 5:\n        return \"\u003e \", val + val * .20\n    elif percent_change \u003d\u003d 4:\n        return val + val * .05 \" - \" val + val * .20\n    elif percent_change \u003d\u003d 3:\n        return val + val * .05 \" - \" val - val * .05\n    elif percent_change \u003d\u003d 2:\n        return val \u003d val * .05 \" - \" val - val * .20\n    else:\n        return \"\u003c \", val - val * .20  \n}\n\nval val_udf \u003d udf(calc_val)\n\nfinal_pred \u003d final_pred.withColumn(\"Full_Value\", val_udf(final_pred(\"Full_Value\")))",
+      "user": "anonymous",
+      "dateUpdated": "May 10, 2018 12:25:10 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1525922790566_2099893062",
+      "id": "20180509-232630_1753646639",
+      "dateCreated": "May 9, 2018 11:26:30 PM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\nfinal_pred.write.format(\"csv\").option(\"header\", \"true\").save(\"/user/nycDevPlan_PBD18/data/pred_2020.csv\")",
+      "user": "anonymous",
+      "dateUpdated": "May 9, 2018 11:18:51 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1525922163605_1546907081",
+      "id": "20180509-231603_1067562357",
+      "dateCreated": "May 9, 2018 11:16:03 PM",
+      "dateStarted": "May 9, 2018 11:18:51 PM",
+      "dateFinished": "May 9, 2018 11:19:38 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\n",
+      "user": "anonymous",
+      "dateUpdated": "May 9, 2018 11:18:51 PM",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1525922331305_-2122981170",
+      "id": "20180509-231851_1368909717",
+      "dateCreated": "May 9, 2018 11:18:51 PM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "train_model_and_predict",
+  "id": "2DE7JT797",
+  "angularObjects": {
+    "2CFXK5J4Y:shared_process": [],
+    "2CF295UYG:shared_process": [],
+    "2CD6ZRPDJ:shared_process": [],
+    "2CFG6Y8G3:shared_process": [],
+    "2CFJKQVBN:shared_process": [],
+    "2CGYXR37V:shared_process": [],
+    "2CDY97F39:shared_process": [],
+    "2CEC5KMFB:shared_process": [],
+    "2CFFWS5P3:shared_process": [],
+    "2CDM4T1EH:shared_process": [],
+    "2CG949ZHZ:shared_process": [],
+    "2CEJ86HV3:shared_process": [],
+    "2CFGNABPQ:shared_process": [],
+    "2CEZV3CHG:shared_process": [],
+    "2CDUTWP3P:shared_process": [],
+    "2CFXDXWCE:shared_process": [],
+    "2CEZMWG72:shared_process": [],
+    "2CFWFHNZR:shared_process": [],
+    "2CG23YGEZ:shared_process": []
+  },
+  "config": {},
+  "info": {}
+}
