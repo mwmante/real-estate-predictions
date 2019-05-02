@@ -1,0 +1,175 @@
+{
+  "paragraphs": [
+    {
+      "text": "%spark.pyspark\n\nfrom pyspark.sql import SparkSession\nfrom pyspark.sql.functions import udf\n\nspark \u003d SparkSession.builder.appName(\"Python Spark SQL basic example\").config(\"spark.some.config.option\", \"some-value\").getOrCreate()\n\nfrom pyspark.sql.types import StructType, StructField, IntegerType,StringType,LongType,DoubleType\n\ninput_schema \u003d StructType([\n    StructField(\"BBLE\", StringType(), True),\n    StructField(\"BLDGCL\", StringType(), True),\n    StructField(\"TAXCLASS\", StringType(), True),\n    StructField(\"Address\", StringType(), True),\n    StructField(\"OWNER\", StringType(), True),\n    StructField(\"Full_Value\", DoubleType(), True),\n    StructField(\"predictedLabel\", StringType(), True),\n    StructField(\"Year\", StringType(), True),\n    StructField(\"Unemployment Rate\", StringType(), True),\n    StructField(\"Mean travel time to work (minutes)\", StringType(), True),\n    StructField(\"Median household income (dollars)\", StringType(), True),\n    StructField(\"Per capita income (dollars)\", StringType(), True),\n    StructField(\"District_Name\", StringType(), True),\n    StructField(\"Tax_Rates_2016\", StringType(), True),\n    StructField(\"Borough\", StringType(), True),\n    StructField(\"Average Household size\", StringType(), True),\n    StructField(\"Percent bachelor\u0027s degree or higher\", StringType(), True),\n    StructField(\"Different house in the U.S.\", StringType(), True),\n    StructField(\"Foreign born\", StringType(), True),\n    StructField(\"Naturalized U.S. citizen\", StringType(), True),\n    StructField(\"Language other than English\", StringType(), True),\n    StructField(\"Median age\", StringType(), True),\n    StructField(\"latitude\", StringType(), True),\n    StructField(\"longitude\", StringType(), True),\n    StructField(\"Label\", StringType(), True),\n ])\n\npred_data \u003d spark.read.csv(\"/user/nycDevPlan_PBD18/data/pred_2020.csv\",header\u003dTrue, schema\u003dinput_schema)\n\npred_data.printSchema()\n \npred_data.select(\"PredictedLabel\", \"Full_Value\").show(n\u003d10)\n \n \n \n ",
+      "user": "anonymous",
+      "dateUpdated": "May 10, 2018 1:41:03 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "/share/apps/spark/spark-2.2.0-bin-hadoop2.6/python/pyspark/context.py:195: UserWarning: Support for Python 2.6 is deprecated as of Spark 2.0.0\n  warnings.warn(\"Support for Python 2.6 is deprecated as of Spark 2.0.0\")\nroot\n |-- BBLE: string (nullable \u003d true)\n |-- BLDGCL: string (nullable \u003d true)\n |-- TAXCLASS: string (nullable \u003d true)\n |-- Address: string (nullable \u003d true)\n |-- OWNER: string (nullable \u003d true)\n |-- Full_Value: double (nullable \u003d true)\n |-- predictedLabel: string (nullable \u003d true)\n |-- Year: string (nullable \u003d true)\n |-- Unemployment Rate: string (nullable \u003d true)\n |-- Mean travel time to work (minutes): string (nullable \u003d true)\n |-- Median household income (dollars): string (nullable \u003d true)\n |-- Per capita income (dollars): string (nullable \u003d true)\n |-- District_Name: string (nullable \u003d true)\n |-- Tax_Rates_2016: string (nullable \u003d true)\n |-- Borough: string (nullable \u003d true)\n |-- Average Household size: string (nullable \u003d true)\n |-- Percent bachelor\u0027s degree or higher: string (nullable \u003d true)\n |-- Different house in the U.S.: string (nullable \u003d true)\n |-- Foreign born: string (nullable \u003d true)\n |-- Naturalized U.S. citizen: string (nullable \u003d true)\n |-- Language other than English: string (nullable \u003d true)\n |-- Median age: string (nullable \u003d true)\n |-- latitude: string (nullable \u003d true)\n |-- longitude: string (nullable \u003d true)\n |-- Label: string (nullable \u003d true)\n\n+--------------+----------+\n|PredictedLabel|Full_Value|\n+--------------+----------+\n|             1| 1220000.0|\n|             1| 1220000.0|\n|             1| 1220000.0|\n|             1| 1220000.0|\n|             1| 4709000.0|\n|             1| 4709000.0|\n|             1| 4709000.0|\n|             1| 4709000.0|\n|             1| 2758000.0|\n|             1| 2758000.0|\n+--------------+----------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1525926489605_1043077537",
+      "id": "20180510-002809_1218085384",
+      "dateCreated": "May 10, 2018 12:28:09 AM",
+      "dateStarted": "May 10, 2018 1:41:03 AM",
+      "dateFinished": "May 10, 2018 1:41:35 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n\ndef find_val(label, val):\n    if label \u003d\u003d \"1\":\n        return \"\u003e \" + str(val + val * .20)\n    elif label \u003d\u003d \"2\":\n        return  str( val + val * .05) + \" - \" + str(val + val * .20)\n    elif label \u003d\u003d \"3\":\n        return str( val - val * .05) + \" - \" + str(val + val * .05)\n    elif label \u003d\u003d \"4\":\n        return str( val - val * .20) + \" - \" + str(val - val * .05)\n    else:\n        return \"\u003c \" + str(val + val * .20)\n        \nfind_val_udf \u003d udf(find_val, StringType())\npred_data \u003d pred_data.withColumn(\"Predicted_Val\",find_val_udf(pred_data[\u0027PredictedLabel\u0027], pred_data[\u0027Full_Value\u0027]))",
+      "user": "anonymous",
+      "dateUpdated": "May 10, 2018 1:44:56 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1525926540258_-502581388",
+      "id": "20180510-002900_2058861091",
+      "dateCreated": "May 10, 2018 12:29:00 AM",
+      "dateStarted": "May 10, 2018 1:44:56 AM",
+      "dateFinished": "May 10, 2018 1:44:56 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n\npred_data.select(\"PredictedLabel\", \"Full_Value\",\"Predicted_val\").sort(\"PredictedLabel\", ascending\u003dFalse).show(n\u003d50)",
+      "user": "anonymous",
+      "dateUpdated": "May 10, 2018 1:48:45 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+--------------+----------+--------------------+\n|PredictedLabel|Full_Value|       Predicted_val|\n+--------------+----------+--------------------+\n|             3| 4809000.0|4568550.0 - 50494...|\n|             3|  769000.0| 730550.0 - 807450.0|\n|             3|  686000.0| 651700.0 - 720300.0|\n|             3| 4809000.0|4568550.0 - 50494...|\n|             3|  686000.0| 651700.0 - 720300.0|\n|             3| 1074000.0|1020300.0 - 11277...|\n|             3|  686000.0| 651700.0 - 720300.0|\n|             3| 1074000.0|1020300.0 - 11277...|\n|             3| 1241000.0|1178950.0 - 13030...|\n|             3| 1074000.0|1020300.0 - 11277...|\n|             3| 1241000.0|1178950.0 - 13030...|\n|             3|  412000.0| 391400.0 - 432600.0|\n|             3| 1241000.0|1178950.0 - 13030...|\n|             3|  494000.0| 469300.0 - 518700.0|\n|             3|  938000.0| 891100.0 - 984900.0|\n|             3|  494000.0| 469300.0 - 518700.0|\n|             3|  938000.0| 891100.0 - 984900.0|\n|             3|  442000.0| 419900.0 - 464100.0|\n|             3|  938000.0| 891100.0 - 984900.0|\n|             3| 1188000.0|1128600.0 - 12474...|\n|             3|  519000.0| 493050.0 - 544950.0|\n|             3| 1178000.0|1119100.0 - 12369...|\n|             3|  519000.0| 493050.0 - 544950.0|\n|             3|  522000.0| 495900.0 - 548100.0|\n|             3|  519000.0| 493050.0 - 544950.0|\n|             3|  522000.0| 495900.0 - 548100.0|\n|             3|  514000.0| 488300.0 - 539700.0|\n|             3|  673000.0| 639350.0 - 706650.0|\n|             3|  514000.0| 488300.0 - 539700.0|\n|             3|  507000.0| 481650.0 - 532350.0|\n|             3|  514000.0| 488300.0 - 539700.0|\n|             3|  764000.0| 725800.0 - 802200.0|\n|             3|  432000.0| 410400.0 - 453600.0|\n|             3|   93000.0|   88350.0 - 97650.0|\n|             3|   93000.0|   88350.0 - 97650.0|\n|             3|  506000.0| 480700.0 - 531300.0|\n|             3|   93000.0|   88350.0 - 97650.0|\n|             3| 1074000.0|1020300.0 - 11277...|\n|             3|   93000.0|   88350.0 - 97650.0|\n|             3|  412000.0| 391400.0 - 432600.0|\n|             3|  686000.0| 651700.0 - 720300.0|\n|             3|  494000.0| 469300.0 - 518700.0|\n|             3|  686000.0| 651700.0 - 720300.0|\n|             3| 4809000.0|4568550.0 - 50494...|\n|             3|  686000.0| 651700.0 - 720300.0|\n|             3| 1178000.0|1119100.0 - 12369...|\n|             3|  686000.0| 651700.0 - 720300.0|\n|             3|  673000.0| 639350.0 - 706650.0|\n|             3|  702000.0| 666900.0 - 737100.0|\n|             3|  507000.0| 481650.0 - 532350.0|\n+--------------+----------+--------------------+\nonly showing top 50 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1525929341778_1208960676",
+      "id": "20180510-011541_331850929",
+      "dateCreated": "May 10, 2018 1:15:41 AM",
+      "dateStarted": "May 10, 2018 1:48:45 AM",
+      "dateFinished": "May 10, 2018 1:48:52 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\npred_data.write.format(\"csv\").save(\"/user/nycDevPlan_PBD18/data/pred_2020_with_values.csv\")",
+      "user": "anonymous",
+      "dateUpdated": "May 10, 2018 1:52:27 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1525929363178_1487765711",
+      "id": "20180510-011603_103907852",
+      "dateCreated": "May 10, 2018 1:16:03 AM",
+      "dateStarted": "May 10, 2018 1:52:27 AM",
+      "dateFinished": "May 10, 2018 1:52:37 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n",
+      "user": "anonymous",
+      "dateUpdated": "May 10, 2018 1:52:27 AM",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1525931547286_-1991422835",
+      "id": "20180510-015227_494993479",
+      "dateCreated": "May 10, 2018 1:52:27 AM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "calc new val",
+  "id": "2DCXS5AUP",
+  "angularObjects": {
+    "2CFXK5J4Y:shared_process": [],
+    "2CF295UYG:shared_process": [],
+    "2CD6ZRPDJ:shared_process": [],
+    "2CFG6Y8G3:shared_process": [],
+    "2CFJKQVBN:shared_process": [],
+    "2CGYXR37V:shared_process": [],
+    "2CDY97F39:shared_process": [],
+    "2CEC5KMFB:shared_process": [],
+    "2CFFWS5P3:shared_process": [],
+    "2CDM4T1EH:shared_process": [],
+    "2CG949ZHZ:shared_process": [],
+    "2CEJ86HV3:shared_process": [],
+    "2CFGNABPQ:shared_process": [],
+    "2CEZV3CHG:shared_process": [],
+    "2CDUTWP3P:shared_process": [],
+    "2CFXDXWCE:shared_process": [],
+    "2CEZMWG72:shared_process": [],
+    "2CFWFHNZR:shared_process": [],
+    "2CG23YGEZ:shared_process": []
+  },
+  "config": {},
+  "info": {}
+}

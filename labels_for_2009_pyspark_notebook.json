@@ -1,0 +1,289 @@
+{
+  "paragraphs": [
+    {
+      "text": "%spark.pyspark\n\nfrom pyspark.sql import SparkSession\n\nspark \u003d SparkSession.builder.appName(\"Python Spark SQL basic example\").config(\"spark.some.config.option\", \"some-value\").getOrCreate()\n\nfrom pyspark.sql.types import StructType, StructField, IntegerType,StringType,LongType,DoubleType\n\nfrom pyspark.sql.functions import udf",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 6:09:35 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1524735161664_-990091088",
+      "id": "20180426-053241_603693921",
+      "dateCreated": "Apr 26, 2018 5:32:41 AM",
+      "dateStarted": "Apr 26, 2018 6:09:35 AM",
+      "dateFinished": "Apr 26, 2018 6:09:35 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n\nschema09 \u003d StructType([\n    StructField(\"BBLE\", StringType(), True),\n    StructField(\"B\", IntegerType(), True),\n    StructField(\"BLOCK\", LongType(), True),\n    StructField(\"LOT\", LongType(), True),\n    StructField(\"FULLVAL\", DoubleType(), True)\n])\n\nFY09 \u003d spark.read.csv(\"/user/nycDevPlan_PBD18/data/FY09.csv\",header\u003dFalse,schema\u003dschema09)\n\nFY09 \u003d FY09.selectExpr(\u0027BBLE\u0027,\u0027FULLVAL AS FULLVAL09\u0027)\n\nFY09 \u003d FY09.filter(FY09.FULLVAL09 !\u003d 0.0)\n\nFY09.show(n\u003d10)",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 6:09:35 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+---------+\n|      BBLE|FULLVAL09|\n+----------+---------+\n|3055190044| 603000.0|\n|3055190045| 548000.0|\n|3055190046| 611000.0|\n|3055190047| 625000.0|\n|3055190048| 625000.0|\n|3055190049| 625000.0|\n|3055190050| 611000.0|\n|3055190051| 603000.0|\n|3055190052| 617000.0|\n|3055190053| 556000.0|\n+----------+---------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1524735267909_-224856174",
+      "id": "20180426-053427_70409772",
+      "dateCreated": "Apr 26, 2018 5:34:27 AM",
+      "dateStarted": "Apr 26, 2018 6:09:35 AM",
+      "dateFinished": "Apr 26, 2018 6:09:36 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n\nschema \u003d StructType([\n    StructField(\"BBLE\", StringType(), True),\n    StructField(\"B\", IntegerType(), True),\n    StructField(\"BLOCK\", LongType(), True),\n    StructField(\"LOT\", LongType(), True),\n    StructField(\"EASEMENT\", StringType(), True),\n    StructField(\"OWNER\", StringType(), True),\n    StructField(\"BLDGCL\", StringType(), True),\n    StructField(\"TAXCLASS\", StringType(), True),\n    StructField(\"LTFRONT\", StringType(), True),\n    StructField(\"LTDEP\", StringType(), True),\n    StructField(\"EXT\", StringType(), True),\n    StructField(\"STORIES\", StringType(), True),\n    StructField(\"FULLVAL\", DoubleType(), True),\n    StructField(\"AVLAND\", DoubleType(), True),\n    StructField(\"AVTOT\", DoubleType(), True),\n    StructField(\"EXLAND\", DoubleType(), True),\n    StructField(\"EXTOT\", DoubleType(), True),\n    StructField(\"EXCD1\", StringType(), True),\n    StructField(\"STADDR\", StringType(), True),\n    StructField(\"ZIP\", StringType(), True),\n    StructField(\"EXMPTCL\", StringType(), True),\n    StructField(\"BLDFRONT\", StringType(), True),\n    StructField(\"BLDDEPTH\", StringType(), True),\n    StructField(\"AVLAND2\", DoubleType(), True),\n    StructField(\"AVTOT2\", DoubleType(), True),\n    StructField(\"EXLAND2\", DoubleType(), True),\n    StructField(\"EXTOT2\", DoubleType(), True),\n    StructField(\"EXCD2\", StringType(), True),\n    StructField(\"PERIOD\", StringType(), True),\n    StructField(\"YEAR\", StringType(), True)\n])\n\nFY10 \u003d spark.read.csv(\"/user/nycDevPlan_PBD18/data/Property_Tax_Valuations/avroll_FY10.txt\",header\u003dFalse,schema\u003dschema)\n\nFY10 \u003d FY10.selectExpr(\u0027BBLE\u0027,\u0027B\u0027,\u0027BLOCK\u0027,\u0027LOT\u0027,\u0027FULLVAL AS FULLVAL10\u0027,\u0027OWNER\u0027,\u0027BLDGCL\u0027,\u0027TAXCLASS\u0027,\u0027STORIES\u0027,\u0027STADDR\u0027,\u0027ZIP\u0027,\u0027EXMPTCL\u0027,\u0027YEAR\u0027)\n\nFY10 \u003d FY10.where(~ (FY10[\u0027BLDGCL\u0027].like(\"Z%\" ) | FY10[\u0027BLDGCL\u0027].like(\"Y%\" ) ) )\n\nFY10 \u003d FY10.filter(FY10.FULLVAL10 !\u003d 0.0)\n\nFY10 \u003d FY10.filter(FY10.B \u003d\u003d 3)\n\nFY10.show(n\u003d10)",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 6:09:35 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+---+-----+---+---------+--------------------+------+--------+-------+--------------+-----+-------+-------+\n|      BBLE|  B|BLOCK|LOT|FULLVAL10|               OWNER|BLDGCL|TAXCLASS|STORIES|        STADDR|  ZIP|EXMPTCL|   YEAR|\n+----------+---+-----+---+---------+--------------------+------+--------+-------+--------------+-----+-------+-------+\n|3000010001|  3|    1|  1|2380000.0|          CON EDISON|    G6|       4|   null| 1 JOHN STREET|11201|   null|2009/10|\n|3000010050|  3|    1| 50|   1.12E7|SAFDI PLAZA REALTY I|    E9|       4|      9| 10 JAY STREET|11201|   null|2009/10|\n|3000030005|  3|    3|  5|  44500.0|DEPARTMENT OF BUS...|    T2|       4|   null|    JAY STREET|11201|     X1|2009/10|\n|3000030035|  3|    3| 35|   3850.0|DEPARTMENT OF BUS...|    T2|       4|   null|   GOLD STREET|11201|     X1|2009/10|\n|3000050008|  3|    5|  8|   3850.0|DEPARTMENT OF BUS...|    T2|       4|   null|   GOLD STREET| null|     X1|2009/10|\n|3000060010|  3|    6| 10|  24400.0|DEPARTMENT OF BUS...|    T2|       4|   null| HUDSON AVENUE| null|     X1|2009/10|\n|3000060100|  3|    6|100| 185760.0|                DCAS|    V1|       4|   null| HUDSON AVENUE|11201|   null|2009/10|\n|3000060200|  3|    6|200|   5170.0|                DCAS|    V1|       4|   null| HUDSON AVENUE|11201|   null|2009/10|\n|3000060300|  3|    6|300|  30800.0|                DCAS|    V1|       4|   null| HUDSON AVENUE|11201|   null|2009/10|\n|3000070009|  3|    7|  9| 562000.0|DEPT OF ENVIRONME...|    T2|       4|      3|2 ADAMS STREET|11201|     X1|2009/10|\n+----------+---+-----+---+---------+--------------------+------+--------+-------+--------------+-----+-------+-------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1524735389010_1136586293",
+      "id": "20180426-053629_1399973936",
+      "dateCreated": "Apr 26, 2018 5:36:29 AM",
+      "dateStarted": "Apr 26, 2018 6:09:36 AM",
+      "dateFinished": "Apr 26, 2018 6:09:38 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n\nFY09 \u003d FY09.join(FY10, \"BBLE\", how\u003d\u0027inner\u0027)\n\nFY09 \u003d FY09.selectExpr(\u0027BBLE\u0027,\u0027B\u0027,\u0027BLOCK\u0027,\u0027LOT\u0027,\u0027FULLVAL09 AS FULLVAL_CURR\u0027,\u0027OWNER\u0027,\u0027BLDGCL\u0027,\u0027TAXCLASS\u0027,\u0027STORIES\u0027,\u0027STADDR\u0027,\u0027ZIP\u0027,\u0027EXMPTCL\u0027,\u0027YEAR\u0027,\u0027FULLVAL10 AS FULLVAL_NEXT\u0027)\n\nFY09.show(n\u003d 10)\n\n#| BBLE| B|BLOCK| LOT|FULLVAL_CURR| OWNER|BLDGCL|TAXCLASS|STORIES| STADDR| ZIP|EXMPTCL| YEAR|FULLVAL_NEXT|yr_change| %_change|result",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 6:09:35 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+---+-----+---+------------+--------------------+------+--------+-------+--------------+-----+-------+-------+------------+\n|      BBLE|  B|BLOCK|LOT|FULLVAL_CURR|               OWNER|BLDGCL|TAXCLASS|STORIES|        STADDR|  ZIP|EXMPTCL|   YEAR|FULLVAL_NEXT|\n+----------+---+-----+---+------------+--------------------+------+--------+-------+--------------+-----+-------+-------+------------+\n|3000010001|  3|    1|  1|   2380000.0|          CON EDISON|    G6|       4|   null| 1 JOHN STREET|11201|   null|2009/10|   2380000.0|\n|3000010050|  3|    1| 50|   7400000.0|SAFDI PLAZA REALTY I|    E9|       4|      9| 10 JAY STREET|11201|   null|2009/10|      1.12E7|\n|3000030005|  3|    3|  5|     43200.0|DEPARTMENT OF BUS...|    T2|       4|   null|    JAY STREET|11201|     X1|2009/10|     44500.0|\n|3000030035|  3|    3| 35|      3740.0|DEPARTMENT OF BUS...|    T2|       4|   null|   GOLD STREET|11201|     X1|2009/10|      3850.0|\n|3000050008|  3|    5|  8|      3740.0|DEPARTMENT OF BUS...|    T2|       4|   null|   GOLD STREET| null|     X1|2009/10|      3850.0|\n|3000060010|  3|    6| 10|     23700.0|DEPARTMENT OF BUS...|    T2|       4|   null| HUDSON AVENUE| null|     X1|2009/10|     24400.0|\n|3000060100|  3|    6|100|     15500.0|                DCAS|    V1|       4|   null| HUDSON AVENUE|11201|   null|2009/10|    185760.0|\n|3000060200|  3|    6|200|      5170.0|                DCAS|    V1|       4|   null| HUDSON AVENUE|11201|   null|2009/10|      5170.0|\n|3000060300|  3|    6|300|     30800.0|                DCAS|    V1|       4|   null| HUDSON AVENUE|11201|   null|2009/10|     30800.0|\n|3000070009|  3|    7|  9|    553000.0|DEPT OF ENVIRONME...|    T2|       4|      3|2 ADAMS STREET|11201|     X1|2009/10|    562000.0|\n+----------+---+-----+---+------------+--------------------+------+--------+-------+--------------+-----+-------+-------+------------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1524735572800_-1481019173",
+      "id": "20180426-053932_51517905",
+      "dateCreated": "Apr 26, 2018 5:39:32 AM",
+      "dateStarted": "Apr 26, 2018 6:09:36 AM",
+      "dateFinished": "Apr 26, 2018 6:09:40 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\ndef yr_diff(curr_val, next_val):\n    return next_val - curr_val\n\ndiff_udf \u003d udf(yr_diff, DoubleType())\nFY09 \u003d FY09.withColumn(\"yr_change\", diff_udf(FY09[\u0027FULLVAL_CURR\u0027], FY09[\u0027FULLVAL_NEXT\u0027]))\n\ndef per_change(yr_change, curr_val):\n    return yr_change / curr_val * 100\n\nper_udf \u003d udf(per_change, DoubleType())\nFY09 \u003d FY09.withColumn(\"%_change\", per_udf(FY09[\u0027yr_change\u0027], FY09[\u0027FULLVAL_CURR\u0027])) \n\nFY09.show(n\u003d10)",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 6:09:35 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+---+-----+---+------------+--------------------+------+--------+-------+--------------+-----+-------+-------+------------+---------+------------------+\n|      BBLE|  B|BLOCK|LOT|FULLVAL_CURR|               OWNER|BLDGCL|TAXCLASS|STORIES|        STADDR|  ZIP|EXMPTCL|   YEAR|FULLVAL_NEXT|yr_change|          %_change|\n+----------+---+-----+---+------------+--------------------+------+--------+-------+--------------+-----+-------+-------+------------+---------+------------------+\n|3000010001|  3|    1|  1|   2380000.0|          CON EDISON|    G6|       4|   null| 1 JOHN STREET|11201|   null|2009/10|   2380000.0|      0.0|               0.0|\n|3000010050|  3|    1| 50|   7400000.0|SAFDI PLAZA REALTY I|    E9|       4|      9| 10 JAY STREET|11201|   null|2009/10|      1.12E7|3800000.0| 51.35135135135135|\n|3000030005|  3|    3|  5|     43200.0|DEPARTMENT OF BUS...|    T2|       4|   null|    JAY STREET|11201|     X1|2009/10|     44500.0|   1300.0| 3.009259259259259|\n|3000030035|  3|    3| 35|      3740.0|DEPARTMENT OF BUS...|    T2|       4|   null|   GOLD STREET|11201|     X1|2009/10|      3850.0|    110.0| 2.941176470588235|\n|3000050008|  3|    5|  8|      3740.0|DEPARTMENT OF BUS...|    T2|       4|   null|   GOLD STREET| null|     X1|2009/10|      3850.0|    110.0| 2.941176470588235|\n|3000060010|  3|    6| 10|     23700.0|DEPARTMENT OF BUS...|    T2|       4|   null| HUDSON AVENUE| null|     X1|2009/10|     24400.0|    700.0|2.9535864978902953|\n|3000060100|  3|    6|100|     15500.0|                DCAS|    V1|       4|   null| HUDSON AVENUE|11201|   null|2009/10|    185760.0| 170260.0|1098.4516129032259|\n|3000060200|  3|    6|200|      5170.0|                DCAS|    V1|       4|   null| HUDSON AVENUE|11201|   null|2009/10|      5170.0|      0.0|               0.0|\n|3000060300|  3|    6|300|     30800.0|                DCAS|    V1|       4|   null| HUDSON AVENUE|11201|   null|2009/10|     30800.0|      0.0|               0.0|\n|3000070009|  3|    7|  9|    553000.0|DEPT OF ENVIRONME...|    T2|       4|      3|2 ADAMS STREET|11201|     X1|2009/10|    562000.0|   9000.0|  1.62748643761302|\n+----------+---+-----+---+------------+--------------------+------+--------+-------+--------------+-----+-------+-------+------------+---------+------------------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1524736018118_-437922221",
+      "id": "20180426-054658_1413547051",
+      "dateCreated": "Apr 26, 2018 5:46:58 AM",
+      "dateStarted": "Apr 26, 2018 6:09:38 AM",
+      "dateFinished": "Apr 26, 2018 6:09:46 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\ndef find_category(percent_change):\n    if percent_change \u003e 20:\n        return 1\n    elif percent_change \u003e 5:\n        return 2\n    elif percent_change \u003e -5:\n        return 3\n    elif percent_change \u003e -20:\n        return 4\n    else:\n        return 5\n        \nfind_cat_udf \u003d udf(find_category, IntegerType())\nFY09 \u003d FY09.withColumn(\"result\",find_cat_udf(FY09[\u0027%_change\u0027]))\n\nFY09.show(n\u003d10)",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 6:09:35 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+---+-----+---+------------+--------------------+------+--------+-------+--------------+-----+-------+-------+------------+---------+------------------+------+\n|      BBLE|  B|BLOCK|LOT|FULLVAL_CURR|               OWNER|BLDGCL|TAXCLASS|STORIES|        STADDR|  ZIP|EXMPTCL|   YEAR|FULLVAL_NEXT|yr_change|          %_change|result|\n+----------+---+-----+---+------------+--------------------+------+--------+-------+--------------+-----+-------+-------+------------+---------+------------------+------+\n|3000010001|  3|    1|  1|   2380000.0|          CON EDISON|    G6|       4|   null| 1 JOHN STREET|11201|   null|2009/10|   2380000.0|      0.0|               0.0|     3|\n|3000010050|  3|    1| 50|   7400000.0|SAFDI PLAZA REALTY I|    E9|       4|      9| 10 JAY STREET|11201|   null|2009/10|      1.12E7|3800000.0| 51.35135135135135|     1|\n|3000030005|  3|    3|  5|     43200.0|DEPARTMENT OF BUS...|    T2|       4|   null|    JAY STREET|11201|     X1|2009/10|     44500.0|   1300.0| 3.009259259259259|     3|\n|3000030035|  3|    3| 35|      3740.0|DEPARTMENT OF BUS...|    T2|       4|   null|   GOLD STREET|11201|     X1|2009/10|      3850.0|    110.0| 2.941176470588235|     3|\n|3000050008|  3|    5|  8|      3740.0|DEPARTMENT OF BUS...|    T2|       4|   null|   GOLD STREET| null|     X1|2009/10|      3850.0|    110.0| 2.941176470588235|     3|\n|3000060010|  3|    6| 10|     23700.0|DEPARTMENT OF BUS...|    T2|       4|   null| HUDSON AVENUE| null|     X1|2009/10|     24400.0|    700.0|2.9535864978902953|     3|\n|3000060100|  3|    6|100|     15500.0|                DCAS|    V1|       4|   null| HUDSON AVENUE|11201|   null|2009/10|    185760.0| 170260.0|1098.4516129032259|     1|\n|3000060200|  3|    6|200|      5170.0|                DCAS|    V1|       4|   null| HUDSON AVENUE|11201|   null|2009/10|      5170.0|      0.0|               0.0|     3|\n|3000060300|  3|    6|300|     30800.0|                DCAS|    V1|       4|   null| HUDSON AVENUE|11201|   null|2009/10|     30800.0|      0.0|               0.0|     3|\n|3000070009|  3|    7|  9|    553000.0|DEPT OF ENVIRONME...|    T2|       4|      3|2 ADAMS STREET|11201|     X1|2009/10|    562000.0|   9000.0|  1.62748643761302|     3|\n+----------+---+-----+---+------------+--------------------+------+--------+-------+--------------+-----+-------+-------+------------+---------+------------------+------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1524736907819_649438346",
+      "id": "20180426-060147_313847267",
+      "dateCreated": "Apr 26, 2018 6:01:47 AM",
+      "dateStarted": "Apr 26, 2018 6:09:41 AM",
+      "dateFinished": "Apr 26, 2018 6:09:56 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\nFY09.write.format(\"csv\").save(\"/user/nycDevPlan_PBD18/data/FY_09_labels.csv\")",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 6:09:35 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1524737098673_1216248452",
+      "id": "20180426-060458_491337482",
+      "dateCreated": "Apr 26, 2018 6:04:58 AM",
+      "dateStarted": "Apr 26, 2018 6:09:46 AM",
+      "dateFinished": "Apr 26, 2018 6:10:04 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 6:09:35 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1524737151816_-119337573",
+      "id": "20180426-060551_1376725831",
+      "dateCreated": "Apr 26, 2018 6:05:51 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "labels for 2009",
+  "id": "2DCWXDBHD",
+  "angularObjects": {
+    "2CFXK5J4Y:shared_process": [],
+    "2CF295UYG:shared_process": [],
+    "2CD6ZRPDJ:shared_process": [],
+    "2CFG6Y8G3:shared_process": [],
+    "2CFJKQVBN:shared_process": [],
+    "2CGYXR37V:shared_process": [],
+    "2CDY97F39:shared_process": [],
+    "2CEC5KMFB:shared_process": [],
+    "2CFFWS5P3:shared_process": [],
+    "2CDM4T1EH:shared_process": [],
+    "2CG949ZHZ:shared_process": [],
+    "2CEJ86HV3:shared_process": [],
+    "2CFGNABPQ:shared_process": [],
+    "2CEZV3CHG:shared_process": [],
+    "2CDUTWP3P:shared_process": [],
+    "2CFXDXWCE:shared_process": [],
+    "2CEZMWG72:shared_process": [],
+    "2CFWFHNZR:shared_process": [],
+    "2CG23YGEZ:shared_process": []
+  },
+  "config": {},
+  "info": {}
+}
