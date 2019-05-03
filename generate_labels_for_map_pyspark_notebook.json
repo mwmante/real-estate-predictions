@@ -1,0 +1,323 @@
+{
+  "paragraphs": [
+    {
+      "text": "%spark.pyspark\n\nfrom pyspark.sql import SparkSession\nfrom pyspark.sql.functions import udf\n\nspark \u003d SparkSession.builder.appName(\"Python Spark SQL basic example\").config(\"spark.some.config.option\", \"some-value\").getOrCreate()\n\nfrom pyspark.sql.types import StructType, StructField, IntegerType,StringType,LongType,DoubleType\n\ninput_schema \u003d StructType([\n    StructField(\"BBLE\", StringType(), True),\n    StructField(\"B\", IntegerType(), True),\n    StructField(\"BLOCK\", LongType(), True),\n    StructField(\"LOT\", LongType(), True),\n    StructField(\"EASEMENT\", StringType(), True),\n    StructField(\"OWNER\", StringType(), True),\n    StructField(\"BLDGCL\", StringType(), True),\n    StructField(\"TAXCLASS\", StringType(), True),\n    StructField(\"LTFRONT\", StringType(), True),\n    StructField(\"LTDEP\", StringType(), True),\n    StructField(\"EXT\", StringType(), True),\n    StructField(\"STORIES\", StringType(), True),\n    StructField(\"FULLVAL\", DoubleType(), True),\n    StructField(\"AVLAND\", DoubleType(), True),\n    StructField(\"AVTOT\", DoubleType(), True),\n    StructField(\"EXLAND\", DoubleType(), True),\n    StructField(\"EXTOT\", DoubleType(), True),\n    StructField(\"EXCD1\", StringType(), True),\n    StructField(\"STADDR\", StringType(), True),\n    StructField(\"ZIP\", StringType(), True),\n    StructField(\"EXMPTCL\", StringType(), True),\n    StructField(\"BLDFRONT\", StringType(), True),\n    StructField(\"BLDDEPTH\", StringType(), True),\n    StructField(\"AVLAND2\", DoubleType(), True),\n    StructField(\"AVTOT2\", DoubleType(), True),\n    StructField(\"EXLAND2\", DoubleType(), True),\n    StructField(\"EXTOT2\", DoubleType(), True),\n    StructField(\"EXCD2\", StringType(), True),\n    StructField(\"PERIOD\", StringType(), True),\n    StructField(\"YEAR\", StringType(), True)\n])\n\n",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 1:23:31 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1524618650139_-111866496",
+      "id": "20180424-211050_1689382",
+      "dateCreated": "Apr 24, 2018 9:10:50 PM",
+      "dateStarted": "Apr 26, 2018 1:23:31 AM",
+      "dateFinished": "Apr 26, 2018 1:23:31 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n\nFY_curr \u003d spark.read.csv(\"/user/nycDevPlan_PBD18/data/Property_Tax_Valuations/avroll_FY18.txt\",header\u003dFalse,schema\u003dinput_schema)\n\nFY_curr \u003d FY_curr.selectExpr(\u0027BBLE\u0027,\u0027B\u0027,\u0027BLOCK\u0027,\u0027LOT\u0027,\u0027FULLVAL AS FULLVAL_CURR\u0027,\u0027OWNER\u0027,\u0027BLDGCL\u0027,\u0027TAXCLASS\u0027,\u0027STORIES\u0027,\u0027STADDR\u0027,\u0027ZIP\u0027,\u0027EXMPTCL\u0027,\u0027YEAR\u0027)\n\nFY_curr \u003d FY_curr.where(~ (FY_curr[\u0027BLDGCL\u0027].like(\"Z%\" ) | FY_curr[\u0027BLDGCL\u0027].like(\"Y%\" ) ) )\n\nFY_curr \u003d FY_curr.filter(FY_curr.FULLVAL_CURR !\u003d 0.0)\n\nFY_curr \u003d FY_curr.filter(FY_curr.B \u003d\u003d 3)\n\nFY_curr.show(n\u003d10)",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 1:23:31 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+---+-----+----+------------+--------------------+------+--------+-------+-------------+-----+-------+-------+\n|      BBLE|  B|BLOCK| LOT|FULLVAL_CURR|               OWNER|BLDGCL|TAXCLASS|STORIES|       STADDR|  ZIP|EXMPTCL|   YEAR|\n+----------+---+-----+----+------------+--------------------+------+--------+-------+-------------+-----+-------+-------+\n|3000010001|  3|    1|   1|   3046900.0|BROOKLYN BRIDGE PARK|    V1|       4|   null|  JOHN STREET|11201|   null|2017/18|\n|3000010050|  3|    1|  50|    2.2571E7|SAFDI PLAZA REALT...|    O6|       4|     10|10 JAY STREET|11201|   null|2017/18|\n|3000011001|  3|    1|1001|    812509.0|1 JOHN STREET COM...|    RK|       4|     12|1 JOHN STREET|11201|   null|2017/18|\n|3000011002|  3|    1|1002|    531491.0|BROOKLYN BRIDGE PARK|    RK|       4|     12|1 JOHN STREET|11201|   null|2017/18|\n|3000011003|  3|    1|1003|    340234.0|AIMEE CARROLL AS ...|    R4|       2|     12|1 JOHN STREET|11201|   null|2017/18|\n|3000011004|  3|    1|1004|    327684.0|       FREIMAN, ALAN|    R4|       2|     12|1 JOHN STREET|11201|   null|2017/18|\n|3000011005|  3|    1|1005|    193821.0|    MAYER, JEFFREY S|    R4|       2|     12|1 JOHN STREET|11201|   null|2017/18|\n|3000011006|  3|    1|1006|    313740.0|    CURTIS, COLTRANE|    R4|       2|     12|1 JOHN STREET|11201|   null|2017/18|\n|3000011007|  3|    1|1007|    340234.0|  CARLIN, ALESSANDRA|    R4|       2|     12|1 JOHN STREET|11201|   null|2017/18|\n|3000011008|  3|    1|1008|    327684.0|           1J3B, LLC|    R4|       2|     12|1 JOHN STREET|11201|   null|2017/18|\n+----------+---+-----+----+------------+--------------------+------+--------+-------+-------------+-----+-------+-------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1524619430536_-1778507907",
+      "id": "20180424-212350_1892122279",
+      "dateCreated": "Apr 24, 2018 9:23:50 PM",
+      "dateStarted": "Apr 26, 2018 1:23:31 AM",
+      "dateFinished": "Apr 26, 2018 1:23:33 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n\nFY_next \u003d spark.read.csv(\"/user/nycDevPlan_PBD18/data/Property_Tax_Valuations/avroll_FY19.txt\",header\u003dFalse,schema\u003dinput_schema)\n\nFY_next \u003d FY_next.selectExpr(\u0027BBLE\u0027,\u0027B\u0027,\u0027BLOCK\u0027,\u0027LOT\u0027,\u0027FULLVAL AS FULLVAL_NEXT\u0027,\u0027OWNER\u0027,\u0027BLDGCL\u0027,\u0027TAXCLASS\u0027,\u0027STORIES\u0027,\u0027STADDR\u0027,\u0027ZIP\u0027,\u0027EXMPTCL\u0027,\u0027YEAR\u0027)\n\nFY_next \u003d FY_next.where(~ (FY_next[\u0027BLDGCL\u0027].like(\"Z%\" ) | FY_next[\u0027BLDGCL\u0027].like(\"Y%\" ) ) )\n\nFY_next \u003d FY_next.filter(FY_next.FULLVAL_NEXT !\u003d 0.0)\n\nFY_next \u003d FY_next.filter(FY_next.B \u003d\u003d 3)\n\nFY_next \u003d FY_next.selectExpr(\u0027BBLE\u0027,\u0027FULLVAL_NEXT\u0027)\n\nFY_next.show(n\u003d10)",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 1:23:31 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+------------+\n|      BBLE|FULLVAL_NEXT|\n+----------+------------+\n|3000010001|   2506000.0|\n|3000010050|    3.0624E7|\n|3000011001|    834878.0|\n|3000011002|    546122.0|\n|3000011003|    665078.0|\n|3000011004|    640547.0|\n|3000011005|    378876.0|\n|3000011006|    613290.0|\n|3000011007|    665078.0|\n|3000011008|    640547.0|\n+----------+------------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1524622859488_65878152",
+      "id": "20180424-222059_1094278271",
+      "dateCreated": "Apr 24, 2018 10:20:59 PM",
+      "dateStarted": "Apr 26, 2018 1:23:31 AM",
+      "dateFinished": "Apr 26, 2018 1:23:35 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n\nFY_curr \u003d FY_curr.join(FY_next, \"BBLE\", how\u003d\u0027inner\u0027)\n\nFY_curr.show(n\u003d 10)",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 1:23:31 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+---+-----+----+------------+--------------------+------+--------+-------+--------------------+-----+-------+-------+------------+\n|      BBLE|  B|BLOCK| LOT|FULLVAL_CURR|               OWNER|BLDGCL|TAXCLASS|STORIES|              STADDR|  ZIP|EXMPTCL|   YEAR|FULLVAL_NEXT|\n+----------+---+-----+----+------------+--------------------+------+--------+-------+--------------------+-----+-------+-------+------------+\n|3000070001|  3|    7|   1|   1509200.0|           NYC PARKS|    Q1|       4|   null| 111 PLYMOUTH STREET|11201|     X1|2017/18|   1555000.0|\n|3000271060|  3|   27|1060|    157955.0|    MERCEDES E. TATO|    R4|       2|     15|       1 MAIN STREET|11201|   null|2017/18|    165403.0|\n|3000311234|  3|   31|1234|    373762.0|  LAI-GON CHANG, TOM|    R4|       2|      9|    205 WATER STREET|11201|   null|2017/18|    371185.0|\n|3000311369|  3|   31|1369|      6101.0|        KELLY, JASON|    RS|       4|      8|    205 WATER STREET|11201|   null|2017/18|      6275.0|\n|3000311411|  3|   31|1411|    154570.0|         SLAM IT LLC|    R4|       2|      7|       51 JAY STREET|11201|   null|2017/18|    419770.0|\n|3000451044|  3|   45|1044|    227334.0|       SEALEY, PAIGE|    R4|       2|     13|70 WASHINGTON STREET|11201|   null|2017/18|    293690.0|\n|3000451156|  3|   45|1156|    213033.0|SHERMAN, JOANNA HALE|    R4|       2|     13|70 WASHINGTON STREET|11201|   null|2017/18|    275215.0|\n|3000451198|  3|   45|1198|    252175.0|    BRENNER, MICHAEL|    R4|       2|     13|70 WASHINGTON STREET|11201|   null|2017/18|    325782.0|\n|3000451214|  3|   45|1214|    138766.0|    LUBONY D11P, LLC|    R4|       2|     13|70 WASHINGTON STREET|11201|   null|2017/18|    179269.0|\n|3000551008|  3|   55|1008|    111545.0|        TOUB, LAUREN|    R4|       2|      6|    79 BRIDGE STREET|11201|   null|2017/18|    127031.0|\n+----------+---+-----+----+------------+--------------------+------+--------+-------+--------------------+-----+-------+-------+------------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1524620244050_-330151583",
+      "id": "20180424-213724_1754189764",
+      "dateCreated": "Apr 24, 2018 9:37:24 PM",
+      "dateStarted": "Apr 26, 2018 1:23:34 AM",
+      "dateFinished": "Apr 26, 2018 1:23:44 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n\ndef yr_diff(curr_val, next_val):\n    return next_val - curr_val\n\ndiff_udf \u003d udf(yr_diff, DoubleType())\nFY_curr \u003d FY_curr.withColumn(\"yr_change\", diff_udf(FY_curr[\u0027FULLVAL_CURR\u0027], FY_curr[\u0027FULLVAL_NEXT\u0027]))\n\ndef per_change(yr_change, curr_val):\n    return yr_change / curr_val * 100\n\nper_udf \u003d udf(per_change, DoubleType())\nFY_curr \u003d FY_curr.withColumn(\"%_change\", per_udf(FY_curr[\u0027yr_change\u0027], FY_curr[\u0027FULLVAL_CURR\u0027])) \n\nFY_curr.show(n\u003d10)",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 1:23:31 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+---+-----+----+------------+--------------------+------+--------+-------+--------------------+-----+-------+-------+------------+---------+------------------+\n|      BBLE|  B|BLOCK| LOT|FULLVAL_CURR|               OWNER|BLDGCL|TAXCLASS|STORIES|              STADDR|  ZIP|EXMPTCL|   YEAR|FULLVAL_NEXT|yr_change|          %_change|\n+----------+---+-----+----+------------+--------------------+------+--------+-------+--------------------+-----+-------+-------+------------+---------+------------------+\n|3000070001|  3|    7|   1|   1509200.0|           NYC PARKS|    Q1|       4|   null| 111 PLYMOUTH STREET|11201|     X1|2017/18|   1555000.0|  45800.0|3.0347203816591573|\n|3000271060|  3|   27|1060|    157955.0|    MERCEDES E. TATO|    R4|       2|     15|       1 MAIN STREET|11201|   null|2017/18|    165403.0|   7448.0| 4.715267006425881|\n|3000311234|  3|   31|1234|    373762.0|  LAI-GON CHANG, TOM|    R4|       2|      9|    205 WATER STREET|11201|   null|2017/18|    371185.0|  -2577.0|   -0.689476190731|\n|3000311369|  3|   31|1369|      6101.0|        KELLY, JASON|    RS|       4|      8|    205 WATER STREET|11201|   null|2017/18|      6275.0|    174.0| 2.851991476807081|\n|3000311411|  3|   31|1411|    154570.0|         SLAM IT LLC|    R4|       2|      7|       51 JAY STREET|11201|   null|2017/18|    419770.0| 265200.0|171.57275021026072|\n|3000451044|  3|   45|1044|    227334.0|       SEALEY, PAIGE|    R4|       2|     13|70 WASHINGTON STREET|11201|   null|2017/18|    293690.0|  66356.0|29.188770707417277|\n|3000451156|  3|   45|1156|    213033.0|SHERMAN, JOANNA HALE|    R4|       2|     13|70 WASHINGTON STREET|11201|   null|2017/18|    275215.0|  62182.0|29.188905005327815|\n|3000451198|  3|   45|1198|    252175.0|    BRENNER, MICHAEL|    R4|       2|     13|70 WASHINGTON STREET|11201|   null|2017/18|    325782.0|  73607.0|29.188856944582138|\n|3000451214|  3|   45|1214|    138766.0|    LUBONY D11P, LLC|    R4|       2|     13|70 WASHINGTON STREET|11201|   null|2017/18|    179269.0|  40503.0|29.187985529596588|\n|3000551008|  3|   55|1008|    111545.0|        TOUB, LAUREN|    R4|       2|      6|    79 BRIDGE STREET|11201|   null|2017/18|    127031.0|  15486.0|13.883186158052805|\n+----------+---+-----+----+------------+--------------------+------+--------+-------+--------------------+-----+-------+-------+------------+---------+------------------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1524623020908_2016584080",
+      "id": "20180424-222340_1225001925",
+      "dateCreated": "Apr 24, 2018 10:23:40 PM",
+      "dateStarted": "Apr 26, 2018 1:23:36 AM",
+      "dateFinished": "Apr 26, 2018 1:23:53 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n\ndef find_category(percent_change):\n    if percent_change \u003e 20:\n        return 1\n    elif percent_change \u003e 5:\n        return 2\n    elif percent_change \u003e -5:\n        return 3\n    elif percent_change \u003e -20:\n        return 4\n    else:\n        return 5\n        \nfind_cat_udf \u003d udf(find_category, IntegerType())\nFY_curr \u003d FY_curr.withColumn(\"result\",find_cat_udf(FY_curr[\u0027%_change\u0027]))\n\nFY_curr.show(n\u003d10)\n    \n    \n",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 1:23:31 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+---+-----+----+------------+--------------------+------+--------+-------+--------------------+-----+-------+-------+------------+---------+------------------+------+\n|      BBLE|  B|BLOCK| LOT|FULLVAL_CURR|               OWNER|BLDGCL|TAXCLASS|STORIES|              STADDR|  ZIP|EXMPTCL|   YEAR|FULLVAL_NEXT|yr_change|          %_change|result|\n+----------+---+-----+----+------------+--------------------+------+--------+-------+--------------------+-----+-------+-------+------------+---------+------------------+------+\n|3000070001|  3|    7|   1|   1509200.0|           NYC PARKS|    Q1|       4|   null| 111 PLYMOUTH STREET|11201|     X1|2017/18|   1555000.0|  45800.0|3.0347203816591573|     3|\n|3000271060|  3|   27|1060|    157955.0|    MERCEDES E. TATO|    R4|       2|     15|       1 MAIN STREET|11201|   null|2017/18|    165403.0|   7448.0| 4.715267006425881|     3|\n|3000311234|  3|   31|1234|    373762.0|  LAI-GON CHANG, TOM|    R4|       2|      9|    205 WATER STREET|11201|   null|2017/18|    371185.0|  -2577.0|   -0.689476190731|     3|\n|3000311369|  3|   31|1369|      6101.0|        KELLY, JASON|    RS|       4|      8|    205 WATER STREET|11201|   null|2017/18|      6275.0|    174.0| 2.851991476807081|     3|\n|3000311411|  3|   31|1411|    154570.0|         SLAM IT LLC|    R4|       2|      7|       51 JAY STREET|11201|   null|2017/18|    419770.0| 265200.0|171.57275021026072|     1|\n|3000451044|  3|   45|1044|    227334.0|       SEALEY, PAIGE|    R4|       2|     13|70 WASHINGTON STREET|11201|   null|2017/18|    293690.0|  66356.0|29.188770707417277|     1|\n|3000451156|  3|   45|1156|    213033.0|SHERMAN, JOANNA HALE|    R4|       2|     13|70 WASHINGTON STREET|11201|   null|2017/18|    275215.0|  62182.0|29.188905005327815|     1|\n|3000451198|  3|   45|1198|    252175.0|    BRENNER, MICHAEL|    R4|       2|     13|70 WASHINGTON STREET|11201|   null|2017/18|    325782.0|  73607.0|29.188856944582138|     1|\n|3000451214|  3|   45|1214|    138766.0|    LUBONY D11P, LLC|    R4|       2|     13|70 WASHINGTON STREET|11201|   null|2017/18|    179269.0|  40503.0|29.187985529596588|     1|\n|3000551008|  3|   55|1008|    111545.0|        TOUB, LAUREN|    R4|       2|      6|    79 BRIDGE STREET|11201|   null|2017/18|    127031.0|  15486.0|13.883186158052805|     2|\n+----------+---+-----+----+------------+--------------------+------+--------+-------+--------------------+-----+-------+-------+------------+---------+------------------+------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1524623632598_699280990",
+      "id": "20180424-223352_83042365",
+      "dateCreated": "Apr 24, 2018 10:33:52 PM",
+      "dateStarted": "Apr 26, 2018 1:23:45 AM",
+      "dateFinished": "Apr 26, 2018 1:24:02 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n\nFY_curr.write.format(\"csv\").save(\"/user/nycDevPlan_PBD18/data/FY_18_labels.csv\")",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 1:23:31 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1524624784040_1516155456",
+      "id": "20180424-225304_711627427",
+      "dateCreated": "Apr 24, 2018 10:53:04 PM",
+      "dateStarted": "Apr 26, 2018 1:23:53 AM",
+      "dateFinished": "Apr 26, 2018 1:26:03 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n\noutput_schema \u003d StructType([\n    StructField(\"BBLE\", StringType(), True),\n    StructField(\"B\", IntegerType(), True),\n    StructField(\"BLOCK\", LongType(), True),\n    StructField(\"LOT\", LongType(), True),\n    StructField(\"FULLVAL_CURR\", DoubleType(), True),\n    StructField(\"OWNER\", StringType(), True),\n    StructField(\"BLDGCL\", StringType(), True),\n    StructField(\"TAXCLASS\", StringType(), True),\n    StructField(\"STORIES\", StringType(), True),\n    StructField(\"STADDR\", StringType(), True),\n    StructField(\"ZIP\", StringType(), True),\n    StructField(\"EXMPTCL\", StringType(), True),\n    StructField(\"YEAR\", StringType(), True),\n    StructField(\"FULLVAL_NEXT\", DoubleType(), True),\n    StructField(\"yr_change\", DoubleType(), True),\n    StructField(\"%_change\", DoubleType(), True),\n    StructField(\"result\", DoubleType(), True)\n])\n\ntest \u003d spark.read.csv(\"/user/nycDevPlan_PBD18/data/FY_18_labels.csv\", header\u003dFalse, schema\u003doutput_schema)\ntest.show(n\u003d10)",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 1:23:31 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+---+-----+----+------------+--------------------+------+--------+-------+--------------------+-----+-------+-------+------------+---------+------------------+------+\n|      BBLE|  B|BLOCK| LOT|FULLVAL_CURR|               OWNER|BLDGCL|TAXCLASS|STORIES|              STADDR|  ZIP|EXMPTCL|   YEAR|FULLVAL_NEXT|yr_change|          %_change|result|\n+----------+---+-----+----+------------+--------------------+------+--------+-------+--------------------+-----+-------+-------+------------+---------+------------------+------+\n|3000271027|  3|   27|1027|    129260.0|   SINGER, BENNETT L|    R4|       2|     15|       1 MAIN STREET|11201|   null|2017/18|    135354.0|   6094.0| 4.714528856568157|   3.0|\n|3000271094|  3|   27|1094|    332339.0|          LEVY BRIAN|    R4|       2|     15|       1 MAIN STREET|11201|   null|2017/18|    348009.0|  15670.0| 4.715065039011371|   3.0|\n|3000311425|  3|   31|1425|     88525.0|             LI, MAN|    R4|       2|      7|       51 JAY STREET|11201|   null|2017/18|    240411.0| 151886.0|171.57413160124258|   1.0|\n|3000311439|  3|   31|1439|    103984.0|NAPOLITANO, JELEN...|    R4|       2|      7|       51 JAY STREET|11201|   null|2017/18|    282390.0| 178406.0|171.57062625019233|   1.0|\n|3000330035|  3|   33|  35|    239000.0|       THOMAS POCIUS|    V3|      1B|   null|    309 WATER STREET|11201|   null|2017/18|    191000.0| -48000.0| -20.0836820083682|   5.0|\n|3000451085|  3|   45|1085|    203262.0|     JENNIFER ULRICH|    R4|       2|     13|70 WASHINGTON STREET|11201|   null|2017/18|    262595.0|  59333.0|29.190404502563194|   1.0|\n|3000451134|  3|   45|1134|    209580.0|        DUTHIE, HUGH|    R4|       2|     13|70 WASHINGTON STREET|11201|   null|2017/18|    270754.0|  61174.0|29.188853898272736|   1.0|\n|3000451138|  3|   45|1138|    135536.0|LL 70 WASHINGTON ...|    R4|       2|     13|70 WASHINGTON STREET|11201|   null|2017/18|    175099.0|  39563.0|29.190030692952423|   1.0|\n|3000521046|  3|   52|1046|    164339.0|       PERIH, JANICE|    R4|       2|     23|     85 ADAMS STREET|11201|   null|2017/18|    194577.0|  30238.0|18.399771204644058|   2.0|\n|3000531022|  3|   53|1022|    138190.0|    J APARTMENTS LLC|    R4|       2|     16|      100 JAY STREET|11201|   null|2017/18|    182186.0|  43996.0|31.837325421521097|   1.0|\n+----------+---+-----+----+------------+--------------------+------+--------+-------+--------------------+-----+-------+-------+------------+---------+------------------+------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1524625287345_-1995912414",
+      "id": "20180424-230127_1351736770",
+      "dateCreated": "Apr 24, 2018 11:01:27 PM",
+      "dateStarted": "Apr 26, 2018 1:24:02 AM",
+      "dateFinished": "Apr 26, 2018 1:26:03 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 1:23:31 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1524625597686_1191746426",
+      "id": "20180424-230637_1614901338",
+      "dateCreated": "Apr 24, 2018 11:06:37 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "generate labels for map",
+  "id": "2DCKK64HW",
+  "angularObjects": {
+    "2CFXK5J4Y:shared_process": [],
+    "2CF295UYG:shared_process": [],
+    "2CD6ZRPDJ:shared_process": [],
+    "2CFG6Y8G3:shared_process": [],
+    "2CFJKQVBN:shared_process": [],
+    "2CGYXR37V:shared_process": [],
+    "2CDY97F39:shared_process": [],
+    "2CEC5KMFB:shared_process": [],
+    "2CFFWS5P3:shared_process": [],
+    "2CDM4T1EH:shared_process": [],
+    "2CG949ZHZ:shared_process": [],
+    "2CEJ86HV3:shared_process": [],
+    "2CFGNABPQ:shared_process": [],
+    "2CEZV3CHG:shared_process": [],
+    "2CDUTWP3P:shared_process": [],
+    "2CFXDXWCE:shared_process": [],
+    "2CEZMWG72:shared_process": [],
+    "2CFWFHNZR:shared_process": [],
+    "2CG23YGEZ:shared_process": []
+  },
+  "config": {},
+  "info": {}
+}

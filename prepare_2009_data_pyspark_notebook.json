@@ -1,0 +1,210 @@
+{
+  "paragraphs": [
+    {
+      "text": "%spark.pyspark\n\nfrom pyspark.sql import SparkSession\n\nspark \u003d SparkSession.builder.appName(\"Python Spark SQL basic example\").config(\"spark.some.config.option\", \"some-value\").getOrCreate()\n\nfrom pyspark.sql.types import StructType, StructField, IntegerType,StringType,LongType,DoubleType\n\nfrom pyspark.sql.functions import split\n",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 4:09:23 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1524727619277_-2031284774",
+      "id": "20180426-032659_730304553",
+      "dateCreated": "Apr 26, 2018 3:26:59 AM",
+      "dateStarted": "Apr 26, 2018 3:28:22 AM",
+      "dateFinished": "Apr 26, 2018 3:28:22 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n\nFY09 \u003d spark.read.text(\"/user/nycDevPlan_PBD18/data/tc1.txt\")\ncol_split \u003d split(FY09[\u0027value\u0027], \u0027,\u0027)\n\nFY09 \u003d FY09.withColumn(\u0027BBLE\u0027, col_split.getItem(0).substr(2,10))\nFY09 \u003d FY09.withColumn(\u0027B\u0027, col_split.getItem(1).cast(IntegerType()))\nFY09 \u003d FY09.withColumn(\u0027BLOCK\u0027, col_split.getItem(2).cast(LongType()))\nFY09 \u003d FY09.withColumn(\u0027LOT\u0027, col_split.getItem(3).cast(LongType()))\nFY09 \u003d FY09.withColumn(\u0027FULLVAL\u0027, col_split.getItem(11).cast(DoubleType()))\n\nFY09 \u003d FY09.filter(FY09.B \u003d\u003d 3)\n\nFY09 \u003d FY09.drop(\u0027value\u0027)\n\nFY09.show(n\u003d10)\n\nFY09.count()",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 5:12:50 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+---+-----+---+---------+\n|      BBLE|  B|BLOCK|LOT|  FULLVAL|\n+----------+---+-----+---+---------+\n|3000300018|  3|   30| 18| 351000.0|\n|3000300019|  3|   30| 19| 687000.0|\n|3000330024|  3|   33| 24| 425000.0|\n|3000330025|  3|   33| 25| 439000.0|\n|3000330026|  3|   33| 26| 416000.0|\n|3000330034|  3|   33| 34|1094000.0|\n|3000330035|  3|   33| 35| 524000.0|\n|3000330039|  3|   33| 39| 714000.0|\n|3000340003|  3|   34|  3| 451000.0|\n|3000340005|  3|   34|  5| 318000.0|\n+----------+---+-----+---+---------+\nonly showing top 10 rows\n\n217030\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1524727702302_-1045604064",
+      "id": "20180426-032822_1913199461",
+      "dateCreated": "Apr 26, 2018 3:28:22 AM",
+      "dateStarted": "Apr 26, 2018 5:12:50 AM",
+      "dateFinished": "Apr 26, 2018 5:13:02 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\nFY09_2 \u003d spark.read.text(\"/user/nycDevPlan_PBD18/data/tc234.txt\")\ncol_split2 \u003d split(FY09_2[\u0027value\u0027], \u0027,\u0027)\n\nFY09_2 \u003d FY09_2.withColumn(\u0027BBLE\u0027, col_split2.getItem(0).substr(2,10))\nFY09_2 \u003d FY09_2.withColumn(\u0027B\u0027, col_split2.getItem(1).cast(IntegerType()))\nFY09_2 \u003d FY09_2.withColumn(\u0027BLOCK\u0027, col_split2.getItem(2).cast(LongType()))\nFY09_2 \u003d FY09_2.withColumn(\u0027LOT\u0027, col_split2.getItem(3).cast(LongType()))\nFY09_2 \u003d FY09_2.withColumn(\u0027FULLVAL\u0027, col_split2.getItem(11).cast(DoubleType()))\n\nFY09_2 \u003d FY09_2.filter(FY09_2.B \u003d\u003d 3)\n\nFY09_2 \u003d FY09_2.drop(\u0027value\u0027)\n\nFY09_2.show(n\u003d10)\n\nFY09_2.count()",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 5:13:12 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+---+-----+---+---------+\n|      BBLE|  B|BLOCK|LOT|  FULLVAL|\n+----------+---+-----+---+---------+\n|3000010001|  3|    1|  1|2380000.0|\n|3000010001|  3|    1|  1|      0.0|\n|3000010050|  3|    1| 50|7400000.0|\n|3000030001|  3|    3|  1|      0.0|\n|3000030001|  3|    3|  1|      0.0|\n|3000030005|  3|    3|  5|  43200.0|\n|3000030035|  3|    3| 35|   3740.0|\n|3000050001|  3|    5|  1|      0.0|\n|3000050008|  3|    5|  8|   3740.0|\n|3000060001|  3|    6|  1|      0.0|\n+----------+---+-----+---+---------+\nonly showing top 10 rows\n\n96158\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1524733684136_1682304205",
+      "id": "20180426-050804_1422712782",
+      "dateCreated": "Apr 26, 2018 5:08:04 AM",
+      "dateStarted": "Apr 26, 2018 5:13:12 AM",
+      "dateFinished": "Apr 26, 2018 5:13:20 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\nFY09 \u003d FY09.union(FY09_2)\nFY09.show(n\u003d10)\n\n#FY09.count()",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 5:15:25 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+---+-----+---+---------+\n|      BBLE|  B|BLOCK|LOT|  FULLVAL|\n+----------+---+-----+---+---------+\n|3000300018|  3|   30| 18| 351000.0|\n|3000300019|  3|   30| 19| 687000.0|\n|3000330024|  3|   33| 24| 425000.0|\n|3000330025|  3|   33| 25| 439000.0|\n|3000330026|  3|   33| 26| 416000.0|\n|3000330034|  3|   33| 34|1094000.0|\n|3000330035|  3|   33| 35| 524000.0|\n|3000330039|  3|   33| 39| 714000.0|\n|3000340003|  3|   34|  3| 451000.0|\n|3000340005|  3|   34|  5| 318000.0|\n+----------+---+-----+---+---------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1524727742697_-629813097",
+      "id": "20180426-032902_1981546680",
+      "dateCreated": "Apr 26, 2018 3:29:02 AM",
+      "dateStarted": "Apr 26, 2018 5:15:25 AM",
+      "dateFinished": "Apr 26, 2018 5:15:27 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\nFY09.write.format(\"csv\").save(\"/user/nycDevPlan_PBD18/data/FY09.csv\")",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 5:15:34 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1524733918916_205174913",
+      "id": "20180426-051158_1815104987",
+      "dateCreated": "Apr 26, 2018 5:11:58 AM",
+      "dateStarted": "Apr 26, 2018 5:15:34 AM",
+      "dateFinished": "Apr 26, 2018 5:15:56 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.pyspark\n",
+      "user": "anonymous",
+      "dateUpdated": "Apr 26, 2018 5:15:34 AM",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1524734134342_1080584285",
+      "id": "20180426-051534_1984364582",
+      "dateCreated": "Apr 26, 2018 5:15:34 AM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "prepare_2009_data",
+  "id": "2DEUXCU63",
+  "angularObjects": {
+    "2CFXK5J4Y:shared_process": [],
+    "2CF295UYG:shared_process": [],
+    "2CD6ZRPDJ:shared_process": [],
+    "2CFG6Y8G3:shared_process": [],
+    "2CFJKQVBN:shared_process": [],
+    "2CGYXR37V:shared_process": [],
+    "2CDY97F39:shared_process": [],
+    "2CEC5KMFB:shared_process": [],
+    "2CFFWS5P3:shared_process": [],
+    "2CDM4T1EH:shared_process": [],
+    "2CG949ZHZ:shared_process": [],
+    "2CEJ86HV3:shared_process": [],
+    "2CFGNABPQ:shared_process": [],
+    "2CEZV3CHG:shared_process": [],
+    "2CDUTWP3P:shared_process": [],
+    "2CFXDXWCE:shared_process": [],
+    "2CEZMWG72:shared_process": [],
+    "2CFWFHNZR:shared_process": [],
+    "2CG23YGEZ:shared_process": []
+  },
+  "config": {},
+  "info": {}
+}
